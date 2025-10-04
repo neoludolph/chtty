@@ -81,6 +81,11 @@ pyenv install 3.13.0
 ```bash
 pyenv virtualenv 3.13.0 chtty-env
 ```
+Activate
+
+```bash
+pyenv activate chtty-env
+```
 
 3. Navigate to project:
 
