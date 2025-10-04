@@ -1,0 +1,26 @@
+# Virtual Environments (die eigentlichen Umgebungen)
+venv/
+env/
+.venv/
+.env/
+
+# pyenv
+.python-version.bak
+
+# ABER NICHT:
+# .python-version  ← Das bleibt im Git!
+
+# Dependencies
+__pycache__/
+*.pyc
+
+# IDE
+.vscode/
+.idea/
+
+# Environment Variables
+.env
+.env.local
+
+# Frontend 
+node_modules/
