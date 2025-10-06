@@ -1,7 +1,10 @@
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import HTMLResponse
+from fastapi import WebSocketDisconnect
 
 app = FastAPI()
+
+active_connections = {}
 
 html = """
 <!DOCTYPE html>
@@ -14,7 +17,8 @@ html = """
         </form>
         <ul id='messages'></ul>
         <script>
-            const ws = new WebSocket("ws://localhost:8000/ws");
+            const userId = 1;
+            const ws = new WebSocket(`ws://localhost:8000/ws/${userId}`);
             ws.onmessage = (event) => {
                 const messages = document.getElementById('messages');
                 const li = document.createElement('li');
@@ -36,12 +40,15 @@ html = """
 async def get():
     return HTMLResponse(html)
 
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    await websocket.accept() # warte bis der WebSocket-Handshake zwischen Server und Client beendet ist 
-    while True:
-        data = await websocket.receive_text() # warte bis über den Websocket eine Nachricht vom Client eingeht
-        await websocket.send_text(f"Du hast gesendet: {data}") # sende data an uvicorn und warte auf die Bestätigung
+@app.websocket("/ws/{user_id}")
+async def websocket_endpoint(websocket: WebSocket, user_id: int):
+    await websocket.accept() 
+    active_connections[user_id] = websocket
+    try:
+        data = await websocket.receive_text()
+        await websocket.send_text(f"Deine Nachricht: {data}")
+    except WebSocketDisconnect:
+        del active_connections[user_id]
 
 
 
