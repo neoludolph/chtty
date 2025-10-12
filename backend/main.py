@@ -11,7 +11,7 @@ async def websocket_endpoint(websocket: WebSocket, user_id: int):
     active_connections[user_id] = websocket
     try:
         data = await websocket.receive_text()
-        await websocket.send_text(f"Du: {data}")
+        await websocket.send_text({data})
     except WebSocketDisconnect:
         del active_connections[user_id]
 

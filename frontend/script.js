@@ -7,15 +7,14 @@ window.addEventListener("DOMContentLoaded", () => {
     const userId = 1;
     const ws = new WebSocket(`ws://localhost:8000/ws/${userId}`);
 
-    const ul = document.createElement("ul");
-    messagesDiv.append(ul);
+    const div = document.createElement("div");
+    messagesDiv.append(div);
 
     button.addEventListener("click", () => {
-        const value = input.value;
-        ws.send(value);
-        const li = document.createElement("li");
-        li.textContent = value;
-        ul.append(li);
-        value = "";
+        ws.send(input.value);
+        const p = document.createElement("p");
+        p.textContent = `You: ${input.value}`;
+        div.append(p);
+        input.value = "";
     });
 });
