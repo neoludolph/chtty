@@ -11,10 +11,17 @@ window.addEventListener("DOMContentLoaded", () => {
     messagesDiv.append(div);
 
     button.addEventListener("click", () => {
+        JSON.stringify(input.value);
         ws.send(input.value);
         const p = document.createElement("p");
         p.textContent = `You: ${input.value}`;
         div.append(p);
         input.value = "";
     });
+
+    ws.onmessage = (message) => {
+        const p = document.createElement("p");
+        p.textContent = `Server: ${message.data}`;
+        div.append(p);
+    }
 });
