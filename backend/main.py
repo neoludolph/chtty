@@ -3,19 +3,15 @@ from fastapi import WebSocketDisconnect
 
 app = FastAPI()
 
-active_connections = {}
+rooms = {}
 
-@app.websocket("/ws/{user_id}")
-async def websocket_endpoint(websocket: WebSocket, user_id: int):
+@app.websocket("/ws/{room_id}")
+async def websocket_endpoint(websocket: WebSocket, room_id: int):
     await websocket.accept() 
-    active_connections[user_id] = websocket
+    rooms[room_id] = websocket
     try:
         data = await websocket.receive_text()
         await websocket.send_text({data})
     except WebSocketDisconnect:
-        del active_connections[user_id]
-
-
-
-
+        del rooms[room_id]
 

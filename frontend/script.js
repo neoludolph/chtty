@@ -4,14 +4,13 @@ window.addEventListener("DOMContentLoaded", () => {
     const button = document.getElementById("btn");
     const messagesDiv = document.getElementById("messages");
 
-    const userId = 1;
-    const ws = new WebSocket(`ws://localhost:8000/ws/${userId}`);
+    const roomId = 1;
+    const ws = new WebSocket(`ws://localhost:8000/ws/${roomId}`);
 
     const div = document.createElement("div");
     messagesDiv.append(div);
 
     button.addEventListener("click", () => {
-        JSON.stringify(input.value);
         ws.send(input.value);
         const p = document.createElement("p");
         p.textContent = `You: ${input.value}`;
