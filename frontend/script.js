@@ -22,6 +22,8 @@ window.addEventListener("DOMContentLoaded", () => {
     connectButton.addEventListener("click", (event) => {
         event.preventDefault();
 
+        joinDiv.style.display = "none";
+
         const ws = new WebSocket(`ws://localhost:8000/ws/${roomInput.value}`);
 
         ws.onopen = () => {
