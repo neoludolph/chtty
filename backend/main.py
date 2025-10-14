@@ -18,3 +18,5 @@ async def websocket_endpoint(websocket: WebSocket, room_id: int):
             await websocket.send_text(data)
     except WebSocketDisconnect:
         del rooms[room_id].discard(websocket)
+    if not rooms[room_id]:
+        del rooms[room_id]
