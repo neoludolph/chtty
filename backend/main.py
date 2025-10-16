@@ -17,6 +17,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: int):
             data = await websocket.receive_text()
             parsed_data = json.loads(data)
             for client in rooms[room_id]:
+                if client is websocket:
+                    continue
                 await client.send_text(data)
     except WebSocketDisconnect:
         rooms[room_id].discard(websocket)
