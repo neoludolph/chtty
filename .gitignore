@@ -7,9 +7,6 @@ env/
 # pyenv
 .python-version.bak
 
-# ABER NICHT:
-# .python-version  ← Das bleibt im Git!
-
 # Dependencies
 __pycache__/
 *.pyc
