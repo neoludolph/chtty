@@ -15,7 +15,6 @@ async def websocket_endpoint(websocket: WebSocket, room_id: int):
     try:
         while True:
             data = await websocket.receive_text()
-            parsed_data = json.loads(data)
             for client in rooms[room_id]:
                 if client is websocket:
                     continue
