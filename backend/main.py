@@ -15,10 +15,19 @@ async def websocket_endpoint(websocket: WebSocket, room_id: int):
     try:
         while True:
             data = await websocket.receive_text()
-            for client in rooms[room_id]:
-                if client is websocket:
-                    continue
-                await client.send_text(data)
+            parsed_data = json.loads(data)
+            if parsed_data.get('type') == 'join':
+                username = parsed_data.get('user_name')
+                for client in rooms[room_id]:
+                    if client is websocket:
+                        continue
+                    await client.send_text(username + " entered the chat")
+            elif parsed_data.get('type') == 'message':
+                message = parsed_data.get('message')
+                for client in rooms[room_id]:
+                    if client is websocket:
+                        continue
+                    await client.send_text(message)
     except WebSocketDisconnect:
         rooms[room_id].discard(websocket)
     if not rooms[room_id]:

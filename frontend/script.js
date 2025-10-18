@@ -46,7 +46,10 @@ window.addEventListener("DOMContentLoaded", () => {
             chatDiv.append(message, sendButton);
 
             sendButton.addEventListener("click", () => {
-                ws.send(message.value);
+                ws.send(JSON.stringify({
+                    type: "message",
+                    message: message.value
+                }));
 
                 const p = document.createElement("p");
                 p.textContent = `You: ${message.value}`;
@@ -56,7 +59,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
             ws.onmessage = (event) => {
                 const p = document.createElement("p");
-                p.textContent = `Server: ${event.data}`;
+                p.textContent = `User: ${event.data}`;
                 chatDiv.append(p);
             }
         };
