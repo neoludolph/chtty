@@ -112,6 +112,10 @@ pip install -r requirements-dev.txt
 
 ## Frontend setup for devs
 
+Requirements:
+
+[Node.js](https://nodejs.org/en/download)
+
 1. Navigate to frontend folder:
 
 ```bash
