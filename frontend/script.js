@@ -48,7 +48,8 @@ window.addEventListener("DOMContentLoaded", () => {
             sendButton.addEventListener("click", () => {
                 ws.send(JSON.stringify({
                     type: "message",
-                    message: message.value
+                    message: message.value,
+                    user_name: usernameInput.value
                 }));
 
                 const p = document.createElement("p");
@@ -59,9 +60,18 @@ window.addEventListener("DOMContentLoaded", () => {
 
             ws.onmessage = (event) => {
                 const p = document.createElement("p");
-                p.textContent = `User: ${event.data}`;
-                chatDiv.append(p);
-            }
+                const eventData = JSON.parse(event.data);
+                if (eventData.type === "join") {
+                    const username = eventData.user_name;
+                    p.textContent = `${username} entered the chat!`;
+                    chatDiv.append(p);
+                } else if (eventData.type === "message") {
+                    const username = eventData.user_name;
+                    const message = eventData.message;
+                    p.textContent = `${eventData.user_name}: ${eventData.message}`;
+                    chatDiv.append(p);
+                }
+            };
         };
     });
 });

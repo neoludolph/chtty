@@ -18,16 +18,17 @@ async def websocket_endpoint(websocket: WebSocket, room_id: int):
             parsed_data = json.loads(data)
             if parsed_data.get('type') == 'join':
                 username = parsed_data.get('user_name')
+                dumped_data_join = json.dumps(parsed_data)
                 for client in rooms[room_id]:
                     if client is websocket:
                         continue
-                    await client.send_text(username + " entered the chat")
+                    await client.send_text(dumped_data_join)
             elif parsed_data.get('type') == 'message':
-                message = parsed_data.get('message')
+                dumped_data_message = json.dumps(parsed_data)
                 for client in rooms[room_id]:
                     if client is websocket:
                         continue
-                    await client.send_text(message)
+                    await client.send_text(dumped_data_message)
     except WebSocketDisconnect:
         rooms[room_id].discard(websocket)
     if not rooms[room_id]:
