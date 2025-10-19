@@ -6,9 +6,13 @@ window.addEventListener("DOMContentLoaded", () => {
     const form = document.createElement("form");
     joinDiv.append(form);
 
-    const roomInput = document.createElement("input");
-    roomInput.type = "text";
-    roomInput.placeholder = "Room ID";
+    const roomIdInput = document.createElement("input");
+    roomIdInput.type = "text";
+    roomIdInput.placeholder = "Room ID";
+
+    const roomNameInput = document.createElement("input");
+    roomNameInput.type = "text";
+    roomNameInput.placeholder = "Room Name"
 
     const usernameInput = document.createElement("input");
     usernameInput.type = "text";
@@ -17,20 +21,20 @@ window.addEventListener("DOMContentLoaded", () => {
     const connectButton = document.createElement("button");
     connectButton.textContent = "Connect";
 
-    form.append(roomInput, usernameInput, connectButton);
+    form.append(roomIdInput, usernameInput, connectButton);
 
     connectButton.addEventListener("click", (event) => {
         event.preventDefault();
 
         joinDiv.style.display = "none";
 
-        const ws = new WebSocket(`ws://localhost:8000/ws/${roomInput.value}`);
+        const ws = new WebSocket(`ws://localhost:8000/ws/${roomIdInput.value}`);
 
         ws.onopen = () => {
             ws.send(JSON.stringify({
                 type: "join",
                 user_name: usernameInput.value,
-                room_id: roomInput.value
+                room_id: roomIdInput.value
             }));
 
             const message = document.createElement("input");
