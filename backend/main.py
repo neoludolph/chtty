@@ -1,6 +1,7 @@
 from fastapi import FastAPI, WebSocket
 from fastapi import WebSocketDisconnect
 import json
+import sqlite3
 
 app = FastAPI()
 
