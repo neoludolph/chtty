@@ -9,3 +9,6 @@ metadata = MetaData()
 
 def create_db():
     metadata.create_all(engine)
+
+def delete_db():
+    metadata.drop_all(engine)

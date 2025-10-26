@@ -1,8 +1,16 @@
 from fastapi import FastAPI, WebSocket
 from fastapi import WebSocketDisconnect
+from contextlib import asynccontextmanager
+from backend.database.database import create_db, delete_db
 import json
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    create_db()
+    yield
+    delete_db()
+
+app = FastAPI(lifespan=lifespan)
 
 rooms = {}
 
