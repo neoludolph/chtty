@@ -5,5 +5,7 @@ current_file = Path(__file__).parent
 db_path = current_file / 'database.db'
 
 engine = create_engine(f"sqlite:///{db_path}", echo=True)
-
 metadata = MetaData()
+
+def create_db():
+    metadata.create_all(engine)

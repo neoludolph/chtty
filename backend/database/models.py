@@ -1,2 +1,21 @@
-from sqlalchemy import Table, Column, Integer, String
+import sqlalchemy as db
+from database import metadata
 
+rooms = db.Table('rooms', metadata,
+    db.Column('room_id', db.String(36), primary_key=True),
+    db.Column('room_name', db.String(30)),
+    db.Column('password', db.String(50))
+) 
+
+users = db.Table('users', metadata,
+    db.Column('user_id', db.String(36), primary_key=True),
+    db.Column('username', db.String),
+    db.Column('room_id', db.ForeignKey('rooms.room_id'))
+)
+
+messages = db.Table('messages', metadata,
+    db.Column('message_id', db.String(36), primary_key=True),
+    db.Column('timestamp', db.TIMESTAMP, server_default=db.func.current_timestamp()),
+    db.Column('room_id', db.ForeignKey('rooms.room_id')),
+    db.Column('user_id', db.ForeignKey('users.user_id'))
+)
