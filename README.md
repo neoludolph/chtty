@@ -12,7 +12,7 @@ A chatroom app with a login functionality
 pyenv install 3.13.0
 pyenv virtualenv 3.13.0 chtty-env
 cd backend/
-pip install -r requirements.txt -r requirements-dev.txt
+pip install -r requirements.txt
 ```
 
 #### Start FastAPI
@@ -81,6 +81,7 @@ pyenv install 3.13.0
 ```bash
 pyenv virtualenv 3.13.0 chtty-env
 ```
+
 Activate
 
 ```bash
