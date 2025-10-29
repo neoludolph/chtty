@@ -6,13 +6,13 @@ window.addEventListener("DOMContentLoaded", () => {
     const form = document.createElement("form");
     joinDiv.append(form);
 
-    const roomIdInput = document.createElement("input");
-    roomIdInput.type = "text";
-    roomIdInput.placeholder = "Room ID";
-
     const roomNameInput = document.createElement("input");
     roomNameInput.type = "text";
     roomNameInput.placeholder = "Room Name"
+
+    const roomPasswordInput = document.createElement("Input");
+    roomPasswordInput.type = "text"
+    roomPasswordInput.placeholder = "Password"
 
     const usernameInput = document.createElement("input");
     usernameInput.type = "text";
@@ -21,7 +21,28 @@ window.addEventListener("DOMContentLoaded", () => {
     const connectButton = document.createElement("button");
     connectButton.textContent = "Connect";
 
-    form.append(roomIdInput, usernameInput, connectButton);
+    form.append(roomNameInput, roomPasswordInput,usernameInput, connectButton);
+
+    roomNameInput.addEventListener("keydown", function(event) {
+        if (event.key == "keydown") {
+            event.preventDefault();
+            connectButton.click();
+        }
+    });
+
+    roomPasswordInput.addEventListener("keydown", function(event) {
+        if (event.key == "keydown") {
+            event.preventDefault();
+            connectButton.click();
+        }
+    });
+
+    usernameInput.addEventListener("keydown", function(event) {
+        if (event.key == "keydown") {
+            event.preventDefault();
+            connectButton.click();
+        }
+    });
 
     connectButton.addEventListener("click", (event) => {
         event.preventDefault();
@@ -33,12 +54,13 @@ window.addEventListener("DOMContentLoaded", () => {
         ws.onopen = () => {
             ws.send(JSON.stringify({
                 type: "join",
-                user_name: usernameInput.value,
-                room_id: roomIdInput.value
+                username: usernameInput.value,
+                room_name: roomNameInput.value,
+                room_password: roomPasswordInput.value
             }));
 
             const message = document.createElement("input");
-            message.type ="text";
+            message.type = "text";
             message.placeholder = "Your message...";
 
             const sendButton = document.createElement("button");

@@ -1,18 +1,22 @@
 from fastapi import FastAPI, WebSocket
 from fastapi import WebSocketDisconnect
+from pydantic import BaseModel
 from contextlib import asynccontextmanager
-from backend.database.database import create_db, delete_db
+from backend.database.database import create_db, dispose_db
 import json
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     create_db()
+    print("Database created")
     yield
-    delete_db()
+    dispose_db()
+    print("Connection closed")
+
+class Item(BaseModel):
+    # Structure
 
 app = FastAPI(lifespan=lifespan)
-
-rooms = {}
 
 @app.websocket("/ws/{room_id}")
 async def websocket_endpoint(websocket: WebSocket, room_id: int):
@@ -25,11 +29,11 @@ async def websocket_endpoint(websocket: WebSocket, room_id: int):
             data = await websocket.receive_text()
             parsed_data = json.loads(data)
             if parsed_data.get('type') == 'join':
-                username = parsed_data.get('user_name')
+                username = parsed_data.get('username')
                 dumped_data_join = json.dumps(parsed_data)
                 for client in rooms[room_id]:
                     if client is websocket:
-                        continue
+                        continue         
                     await client.send_text(dumped_data_join)
             elif parsed_data.get('type') == 'message':
                 dumped_data_message = json.dumps(parsed_data)
@@ -41,3 +45,8 @@ async def websocket_endpoint(websocket: WebSocket, room_id: int):
         rooms[room_id].discard(websocket)
     if not rooms[room_id]:
         del rooms[room_id]
+
+@app.post()
+async def create_room_(item: Item):
+
+
