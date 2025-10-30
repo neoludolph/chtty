@@ -52,7 +52,7 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 
     createButton.addEventListener("click", (event) => {
-        fetch('', {
+        fetch('http://localhost:8000/create-room', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
         joinDiv.style.display = "none";
 
-        const ws = new WebSocket(`ws://localhost:8000/ws/${roomIdInput.value}`);
+        const ws = new WebSocket(`ws://localhost:8000/ws/${roomNameInput.value}`);
 
         ws.onopen = () => {
             ws.send(JSON.stringify({
