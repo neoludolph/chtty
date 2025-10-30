@@ -2,6 +2,7 @@ from fastapi import FastAPI, WebSocket
 from fastapi import WebSocketDisconnect
 from pydantic import BaseModel
 from contextlib import asynccontextmanager
+from typing import Union
 from backend.database.database import create_db, dispose_db
 import json
 
@@ -13,10 +14,12 @@ async def lifespan(app: FastAPI):
     dispose_db()
     print("Connection closed")
 
-class Item(BaseModel):
-    # Structure
-
 app = FastAPI(lifespan=lifespan)
+
+class RoomData(BaseModel):
+    username: str
+    roomname: str
+    password: Union[str, None]
 
 @app.websocket("/ws/{room_id}")
 async def websocket_endpoint(websocket: WebSocket, room_id: int):
@@ -46,7 +49,6 @@ async def websocket_endpoint(websocket: WebSocket, room_id: int):
     if not rooms[room_id]:
         del rooms[room_id]
 
-@app.post()
-async def create_room_(item: Item):
-
-
+@app.post("/create-room")
+async def create_room_(create_room_data: RoomData):
+    create_db()

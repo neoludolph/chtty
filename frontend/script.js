@@ -3,8 +3,11 @@
 window.addEventListener("DOMContentLoaded", () => {
     const joinDiv = document.getElementById("join-container")
 
-    const form = document.createElement("form");
-    joinDiv.append(form);
+    const joinForm = document.createElement("form");
+    joinDiv.append(joinForm);
+
+    const createForm = document.createElement("form");
+    joinDiv.append(createForm);
 
     const roomNameInput = document.createElement("input");
     roomNameInput.type = "text";
@@ -12,16 +15,20 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const roomPasswordInput = document.createElement("Input");
     roomPasswordInput.type = "text"
-    roomPasswordInput.placeholder = "Password"
+    roomPasswordInput.placeholder = "Password (optional)"
 
     const usernameInput = document.createElement("input");
     usernameInput.type = "text";
-    usernameInput.placeholder = "Username";
+    usernameInput.placeholder = "Your username";
 
     const connectButton = document.createElement("button");
     connectButton.textContent = "Connect";
 
-    form.append(roomNameInput, roomPasswordInput,usernameInput, connectButton);
+    const createButton = document.createElement("button");
+    createButton.textContent = "Create Room";
+
+    createForm.append(roomNameInput, roomPasswordInput, usernameInput, createButton);
+    joinForm.append(roomNameInput, roomPasswordInput, usernameInput, connectButton);
 
     roomNameInput.addEventListener("keydown", function(event) {
         if (event.key == "keydown") {
@@ -44,6 +51,23 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    createButton.addEventListener("click", (event) => {
+        fetch('', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                roomname: roomNameInput.value,
+                password: roomPasswordInput.value,
+                username: usernameInput.value,
+            })
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error: ', error));
+    });
+
     connectButton.addEventListener("click", (event) => {
         event.preventDefault();
 
@@ -55,8 +79,8 @@ window.addEventListener("DOMContentLoaded", () => {
             ws.send(JSON.stringify({
                 type: "join",
                 username: usernameInput.value,
-                room_name: roomNameInput.value,
-                room_password: roomPasswordInput.value
+                roomName: roomNameInput.value,
+                roomPassword: roomPasswordInput.value
             }));
 
             const message = document.createElement("input");
@@ -75,7 +99,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 ws.send(JSON.stringify({
                     type: "message",
                     message: message.value,
-                    user_name: usernameInput.value
+                    userName: usernameInput.value
                 }));
 
                 const p = document.createElement("p");

@@ -18,5 +18,5 @@ def create_room(username, room_password, room_name):
     room_id = uuid.uuid4()
     user_id = uuid.uuid4()
     with engine.begin() as connect:
-        connect.execute()
+        connect.execute() # <- Insert
     
