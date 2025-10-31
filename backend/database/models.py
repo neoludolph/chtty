@@ -1,5 +1,6 @@
 import sqlalchemy as db
-from database import metadata
+
+metadata = db.MetaData()
 
 rooms = db.Table('rooms', metadata,
     db.Column('room_id', db.String(36), primary_key=True),

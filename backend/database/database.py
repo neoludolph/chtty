@@ -1,14 +1,13 @@
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import create_engine
 from pathlib import Path
 import uuid
 from backend.models.room_models import RoomDataResponse
-from backend.models import rooms, users, messages
+from backend.database.models import rooms, users, messages, metadata
 
 current_file = Path(__file__).parent
 db_path = current_file / 'database.db'
 
 engine = create_engine(f"sqlite:///{db_path}", echo=True)
-metadata = MetaData()
 
 def create_db():
     metadata.create_all(engine)
