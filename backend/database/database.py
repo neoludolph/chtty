@@ -3,9 +3,16 @@ from pathlib import Path
 import uuid
 from backend.models.room_models import RoomDataResponse
 from backend.database.models import rooms, users, messages, metadata
+import shutil
+import os
 
 current_file = Path(__file__).parent
 db_path = current_file / 'database.db'
+template_db_path = current_file / 'database_empty.db'
+
+if not os.path.exists(template_db_path):
+    print("-> No database found! Create new out of template ...")
+    shutil.copy(template_db_path, db_path)
 
 engine = create_engine(f"sqlite:///{db_path}", echo=True)
 
