@@ -45,5 +45,5 @@ app = FastAPI(lifespan=lifespan)
 
 @app.post("/create-room", response_model=RoomDataResponse)
 async def create_room_(room_data: RoomData):
-    result = create_room(room_data.username, room_data.roomname, room_data.password)
+    result = create_room(room_data.roomname, room_data.password, room_data.username)
     return result

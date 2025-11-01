@@ -22,7 +22,7 @@ def create_db():
 def dispose_db():
     engine.dispose()
 
-def create_room(username, room_name, room_password):
+def create_room(room_name, room_password, username):
     room_id = uuid.uuid4()
     user_id = uuid.uuid4()
     with engine.begin() as connect:
