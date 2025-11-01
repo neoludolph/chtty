@@ -10,8 +10,8 @@ current_file = Path(__file__).parent
 db_path = current_file / 'database.db'
 template_db_path = current_file / 'database_empty.db'
 
-if not os.path.exists(template_db_path):
-    print("-> No database found! Create new out of template ...")
+if not os.path.exists(db_path):
+    print("-> No database found! Create new from template ...")
     shutil.copy(template_db_path, db_path)
 
 engine = create_engine(f"sqlite:///{db_path}", echo=True)
