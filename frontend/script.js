@@ -52,6 +52,8 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 
     createButton.addEventListener("click", (event) => {
+        event.preventDefault();
+
         fetch('http://localhost:8000/create-room', {
             method: 'POST',
             headers: {

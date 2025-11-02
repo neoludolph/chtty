@@ -1,5 +1,6 @@
 from fastapi import FastAPI, WebSocket
 from fastapi import WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from backend.models.room_models import RoomData, RoomDataResponse
 from backend.database.database import create_db, dispose_db, create_room
@@ -14,6 +15,19 @@ async def lifespan(app: FastAPI):
     print("Connection closed")
 
 app = FastAPI(lifespan=lifespan)
+
+origins = [
+    "http://localhost:8000",
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # @app.websocket("/ws/{room_id}")
 # async def websocket_endpoint(websocket: WebSocket, roomname: str):

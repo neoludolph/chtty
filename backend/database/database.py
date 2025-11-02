@@ -26,8 +26,8 @@ def create_room(room_name, room_password, username):
     room_id = uuid.uuid4()
     user_id = uuid.uuid4()
     with engine.begin() as connect:
-        connect.execute(rooms.insert().values(room_id=room_id, room_name=room_name, password=room_password)) 
-        connect.execute(users.insert().values(user_id=user_id, username=username, room_id=room_id)) 
+        connect.execute(rooms.insert().values(room_id=str(room_id), room_name=room_name, password=room_password))
+        connect.execute(users.insert().values(user_id=str(user_id), username=username, room_id=str(room_id)))
     message = "Room successfully created!"
     response = RoomDataResponse(room_id=str(room_id), message=message)
     return response
