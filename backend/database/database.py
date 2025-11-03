@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, delete
 from pathlib import Path
 import uuid
 from backend.models.room_models import RoomDataResponse
@@ -32,3 +32,27 @@ def create_room(room_name, room_password, username):
     response = RoomDataResponse(room_id=str(room_id), message=message)
     return response
 
+def delete_room(room_id):
+    with engine.begin() as connect:
+        connect.execute(delete(rooms).where(rooms.c.room_id == room_id))
+    message = "Room successfully deleted!"
+    response = RoomDataResponse(room_id=str(room_id), message=message)
+    return response
+
+def delete_rooms_table_content():
+    with engine.begin() as connect:
+        connect.execute(delete(rooms))
+    message = "Table content of rooms successfully deleted!"
+    return message
+
+def delete_users_table_content():
+    with engine.begin() as connect:
+        connect.execute(delete(users))
+    message = "Table content of users successfully deleted!"
+    return message
+
+def delete_messages_table_content():
+    with engine.begin() as connect:
+        connect.execute(delete(messages))
+    message = "Table content of messages successfully deleted!"
+    return message

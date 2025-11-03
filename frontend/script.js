@@ -27,6 +27,9 @@ window.addEventListener("DOMContentLoaded", () => {
     const createButton = document.createElement("button");
     createButton.textContent = "Create Room";
 
+    const deleteRoomButton = document.createElement("button");
+    deleteRoomButton.textContent = "Delete Room";
+
     createForm.append(roomNameInput, roomPasswordInput, usernameInput, createButton);
     joinForm.append(roomNameInput, roomPasswordInput, usernameInput, connectButton);
 
@@ -66,7 +69,10 @@ window.addEventListener("DOMContentLoaded", () => {
             })
         })
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => {
+            document.getElementById("message").textContent = data.message;
+            document.getElementById("room_id").textContent = "Room ID: " + data.room_id;
+        })
         .catch(error => console.error('Error: ', error));
     });
 

@@ -2,8 +2,8 @@ from fastapi import FastAPI, WebSocket
 from fastapi import WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from backend.models.room_models import RoomData, RoomDataResponse
-from backend.database.database import create_db, dispose_db, create_room
+from backend.models.room_models import RoomData, RoomDataResponse, DeleteRoom
+from backend.database.database import create_db, dispose_db, create_room, delete_room, delete_rooms_table_content, delete_users_table_content, delete_messages_table_content
 import json
 
 @asynccontextmanager
@@ -60,4 +60,24 @@ app.add_middleware(
 @app.post("/create-room", response_model=RoomDataResponse)
 async def create_room_(room_data: RoomData):
     result = create_room(room_data.roomname, room_data.password, room_data.username)
+    return result
+
+@app.delete("/delete-room", response_model=RoomDataResponse)
+async def delete_room_(room_data: DeleteRoom):
+    result = delete_room(room_data.room_id)
+    return result
+
+@app.delete("/delete_rooms_table")
+async def delete_rooms_table_content_():
+    result = delete_rooms_table_content()
+    return result
+
+@app.delete("/delete_users_table")
+async def delete_users_table_content_():
+    result = delete_users_table_content()
+    return result
+
+@app.delete("/delete_messages_table")
+async def delete_messages_table_content_():
+    result = delete_messages_table_content()
     return result

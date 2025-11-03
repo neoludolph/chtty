@@ -9,3 +9,6 @@ class RoomData(BaseModel):
 class RoomDataResponse(BaseModel):
     room_id: str
     message: str
+
+class DeleteRoom(BaseModel):
+    room_id: str
