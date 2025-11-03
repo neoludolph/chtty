@@ -64,7 +64,7 @@ async def create_room_(room_data: RoomData):
 
 @app.delete("/delete-room", response_model=RoomDataResponse)
 async def delete_room_(room_data: DeleteRoom):
-    result = delete_room(room_data.room_id)
+    result = delete_room(room_data.room_id, room_data.password)
     return result
 
 @app.delete("/delete_rooms_table")

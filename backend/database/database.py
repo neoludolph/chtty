@@ -32,7 +32,7 @@ def create_room(room_name, room_password, username):
     response = RoomDataResponse(room_id=str(room_id), message=message)
     return response
 
-def delete_room(room_id):
+def delete_room(room_id, password):
     with engine.begin() as connect:
         connect.execute(delete(rooms).where(rooms.c.room_id == room_id))
     message = "Room successfully deleted!"
