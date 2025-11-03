@@ -12,3 +12,4 @@ class RoomDataResponse(BaseModel):
 
 class DeleteRoom(BaseModel):
     room_id: str
+    password

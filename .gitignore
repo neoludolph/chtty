@@ -23,3 +23,6 @@ node_modules/
 
 # Database
 backend/database/database.db
+
+# Mac
+.DS_Store

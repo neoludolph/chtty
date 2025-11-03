@@ -11,7 +11,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const roomNameInput = document.createElement("input");
     roomNameInput.type = "text";
-    roomNameInput.placeholder = "Room Name"
+    roomNameInput.placeholder = "Room Name";
+
+    const roomId = document.createElement("input");
+    roomId.type = "text";
+    roomId.placeholder = "Room Id";
 
     const roomPasswordInput = document.createElement("Input");
     roomPasswordInput.type = "text"
@@ -30,7 +34,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const deleteRoomButton = document.createElement("button");
     deleteRoomButton.textContent = "Delete Room";
 
-    createForm.append(roomNameInput, roomPasswordInput, usernameInput, createButton);
+    createForm.append(roomNameInput, roomPasswordInput, usernameInput, createButton, deleteRoomButton, roomId);
     joinForm.append(roomNameInput, roomPasswordInput, usernameInput, connectButton);
 
     roomNameInput.addEventListener("keydown", function(event) {
@@ -72,6 +76,26 @@ window.addEventListener("DOMContentLoaded", () => {
         .then(data => {
             document.getElementById("message").textContent = data.message;
             document.getElementById("room_id").textContent = "Room ID: " + data.room_id;
+        })
+        .catch(error => console.error('Error: ', error));
+    });
+
+    deleteRoomButton.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        fetch("http://localhost:8000/delete-room", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                room_id: roomId.value,
+                password: roomPasswordInput.value,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("message").textContent = data.message;
         })
         .catch(error => console.error('Error: ', error));
     });
