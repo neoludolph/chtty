@@ -1,3 +1,10 @@
-button {
-    padding: 3px;
+.button {
+    padding: 2px;
+    color: black;
+    border-radius: 8px;
+    margin: 5px;
+}
+
+.textFields {
+
 }
