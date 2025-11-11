@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    background-color: whitesmoke;
 }
 
 header {
@@ -19,25 +20,80 @@ header a {
     border: 1px solid rgb(255, 255, 255);
     border-radius: 5px;
     padding: 5px;
-}
 
-header a {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 16px;
-    letter-spacing: 0.8px;
-    word-spacing: 1.4px;
     color: #ffffff;
-    font-weight: 400;
-    text-decoration: rgb(68, 68, 68);
-    font-style: normal;
-    font-variant: normal;
-    text-transform: none;
+    font-weight: 650;
 }
 
 header a:hover {
     background-color:rgba(73, 73, 73, 0.411);
 }
 
-.create-form {
-
+h2 {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 32px;
 }
+
+button {
+    padding: 3px;
+    padding-left: 8px;
+    padding-right: 8px;
+    margin: 8px;
+    border: 1px solid black;
+    border-radius: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 650;
+    color: white;
+    background-color: rgb(73, 73, 73);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+button:hover {
+    filter: drop-shadow(0 0 8px rgb(61, 61, 61));
+}
+
+.menu-container {
+    
+}
+
+.create-form {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.join-form {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.delete-form {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+#message {
+    margin-top: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+#room-id {
+    margin-top: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+

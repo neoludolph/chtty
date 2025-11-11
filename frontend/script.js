@@ -2,7 +2,7 @@
 
 window.addEventListener("DOMContentLoaded", () => {
     const menuContainer = document.getElementById("menu-container");
-    
+
     const roomNameCreate = document.getElementById("room-name-create");
     const roomNameJoin = document.getElementById("room-name-join");
     const roomNameDelete = document.getElementById("room-name-delete");
@@ -15,7 +15,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const usernameJoin = document.getElementById("username-join");
     const usernameDelete = document.getElementById("username-delete");
 
-    const roomId = document.getElementById("room-id");
+    const roomId = document.getElementById("room-id-");
 
     const createButton = document.getElementById("create-button");
     const connectButton = document.getElementById("connect-button");
@@ -60,7 +60,7 @@ window.addEventListener("DOMContentLoaded", () => {
         .then(response => response.json())
         .then(data => {
             document.getElementById("message").textContent = data.message;
-            document.getElementById("room_id").textContent = "Room ID: " + data.room_id;
+            document.getElementById("room-id").textContent = "Room ID: " + data.room_id;
         })
         .catch(error => console.error('Error: ', error));
     });

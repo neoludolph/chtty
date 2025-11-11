@@ -15,8 +15,8 @@
     </header>
     </div>
 
-    <div id="menu-container">
-      <div>
+    <div class="menu-container">
+      <div class="create-form">
         <form>
           <h2>Create a room</h2>
           <input type="text" placeholder="Room Name" id="room-name-create">
@@ -28,7 +28,7 @@
         </form>
       </div>
 
-      <div>
+      <div class="join-form">
         <form>
           <h2>Join a room</h2>
           <input type="text" placeholder="Room Name" id="room-name-join">
@@ -40,15 +40,15 @@
         </form>
       </div>
 
-      <div>
+      <div class="delete-form">
         <form>
           <h2>Delete a room</h2>
           <input type="text" placeholder="Room Name" id="room-name-delete">
-          <input type="text" placeholder="Room ID" id="room-id">
+          <input type="text" placeholder="Room ID" id="room-id-">
           <input type="text" placeholder="Password (optional)" id="password-delete">
           <input type="text" placeholder="Username" id="username-delete">
           <button id="delete-button">
-            Connect to room
+            Delete a room
           </button>
         </form>
       </div>
@@ -56,7 +56,7 @@
 
     <div id="chat-container"></div>
     <div id="message"></div>
-    <div id="room_id"></div>
+    <div id="room-id"></div>
     <script type="module" src="/script.js"></script>
   </body>
 </html>
