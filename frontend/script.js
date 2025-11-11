@@ -1,7 +1,7 @@
 'use strict';
 
 window.addEventListener("DOMContentLoaded", () => {
-    const createAndJoinDiv = document.getElementById("join-container")
+    const createAndJoinDiv = document.getElementById("menu-container")
 
     // Formular zum Erstellen eines Rooms 
     const createForm = document.createElement("form");
@@ -105,25 +105,67 @@ window.addEventListener("DOMContentLoaded", () => {
     roomNameInputCreate.addEventListener("keydown", function(event) {
         if (event.key == "keydown") {
             event.preventDefault();
-            connectButton.click();
+            createButton.click();
         }
     });
 
     roomPasswordInputCreate.addEventListener("keydown", function(event) {
         if (event.key == "keydown") {
             event.preventDefault();
-            connectButton.click();
+            createButton.click();
         }
     });
 
     usernameInputCreate.addEventListener("keydown", function(event) {
         if (event.key == "keydown") {
             event.preventDefault();
-            connectButton.click();
+            createButton.click();
         }
     });
 
     // Keydown für Join-Inputs
+    roomNameInputJoin.addEventListener("keydown", function(event) {
+        if (event.key == "keydown") {
+            connectButton.click();
+        }
+    });
+
+    roomPasswordInputJoin.addEventListener("keydown", function(event) {
+        if (event.key == "keydown") {
+            connectButton.click();
+        }
+    });
+
+    usernameInputJoin.addEventListener("keydown", function(event) {
+        if (event.key == "keydown") {
+            connectButton.click();
+        }
+    });
+
+    // Keydown für Delete-Inputs
+    roomNameInputDelete.addEventListener("keydown", function(event) {
+        if (event.key == "keydown") {
+            deleteRoomButton.click();
+        }
+    });
+
+    roomPasswordInputDelete.addEventListener("keydown", function(event) {
+        if (event.key == "keydown") {
+            deleteRoomButton.click();
+        }
+    });
+
+    usernameInputDelete.addEventListener("keydown", function(event) {
+        if (event.key == "keydown") {
+            deleteRoomButton.click();
+        }
+    });
+
+    roomId.addEventListener("keydown", function(event) {
+        if (event.key == "keydown") {
+            deleteRoomButton.click();
+        }
+    });
     
 
     createButton.addEventListener("click", (event) => {
