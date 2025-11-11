@@ -37,6 +37,10 @@ h2 {
     display: flex;
     justify-content: center;
     align-content: center;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: rgb(61, 61, 61);
+    color: white;
 }
 
 button {
@@ -59,7 +63,7 @@ button:hover {
 }
 
 .menu-container {
-    
+    margin-top: 50px;
 }
 
 .create-form {
@@ -80,10 +84,15 @@ button:hover {
     align-content: center;
 }
 
-input {
+.menu-container input {
+    margin: 10px;
     border: 1px solid black;
     padding: 8px;
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
 }
 
 #message {
