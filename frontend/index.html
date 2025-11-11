@@ -7,11 +7,53 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <header>
+
+    <div>
+      <header>
       <a href="contact.html">Contact</a>
       <a href="about_me.html">About me</a>
     </header>
-    <div id="menu-container"></div>
+    </div>
+
+    <div id="menu-container">
+      <div>
+        <form>
+          <h2>Create a room</h2>
+          <input type="text" placeholder="Room Name" id="room-name-create">
+          <input type="text" placeholder="Password (optional)" id="password-create">
+          <input type="text" placeholder="Username" id="username-create">
+          <button id="create-button">
+            Create a room
+          </button>
+        </form>
+      </div>
+
+      <div>
+        <form>
+          <h2>Join a room</h2>
+          <input type="text" placeholder="Room Name" id="room-name-join">
+          <input type="text" placeholder="Password (optional)" id="password-join">
+          <input type="text" placeholder="Username" id="username-join">
+          <button id="connect-button">
+            Connect to room
+          </button>
+        </form>
+      </div>
+
+      <div>
+        <form>
+          <h2>Delete a room</h2>
+          <input type="text" placeholder="Room Name" id="room-name-delete">
+          <input type="text" placeholder="Room ID" id="room-id">
+          <input type="text" placeholder="Password (optional)" id="password-delete">
+          <input type="text" placeholder="Username" id="username-delete">
+          <button id="delete-button">
+            Connect to room
+          </button>
+        </form>
+      </div>
+    </div>
+
     <div id="chat-container"></div>
     <div id="message"></div>
     <div id="room_id"></div>

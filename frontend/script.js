@@ -1,173 +1,48 @@
 'use strict';
 
 window.addEventListener("DOMContentLoaded", () => {
-    const createAndJoinDiv = document.getElementById("menu-container")
-
-    // Formular zum Erstellen eines Rooms 
-    const createForm = document.createElement("form");
-    createAndJoinDiv.append(createForm);
-
-    const createFormHeading = document.createElement("h2");
-    createFormHeading.textContent = "Create room";
-
-    const roomNameInputCreate = document.createElement("input");
-    roomNameInputCreate.type = "text";
-    roomNameInputCreate.placeholder = "Room Name";
-
-    const roomPasswordInputCreate = document.createElement("Input");
-    roomPasswordInputCreate.type = "text";
-    roomPasswordInputCreate.placeholder = "Password (optional)";
-
-    const usernameInputCreate = document.createElement("input");
-    usernameInputCreate.type = "text";
-    usernameInputCreate.placeholder = "Your username";
-
-    const createButton = document.createElement("button");
-    createButton.textContent = "Create Room";
-    createButton.classList.add("button");
-
-    createForm.append(
-        createFormHeading, 
-        roomNameInputCreate, 
-        roomPasswordInputCreate, 
-        usernameInputCreate, 
-        createButton
-    );
-
-    // Formular zum Beitreten eines Rooms
-    const joinForm = document.createElement("form");
-    createAndJoinDiv.append(joinForm);
-
-    const joinFormHeading = document.createElement("h2");
-    joinFormHeading.textContent = "Join room";
-
-    const roomNameInputJoin = document.createElement("input");
-    roomNameInputJoin.type = "text";
-    roomNameInputJoin.placeholder = "Room Name";
-
-    const roomPasswordInputJoin = document.createElement("Input");
-    roomPasswordInputJoin.type = "text";
-    roomPasswordInputJoin.placeholder = "Password (optional)";
-
-    const usernameInputJoin = document.createElement("input");
-    usernameInputJoin.type = "text";
-    usernameInputJoin.placeholder = "Your username";
-
-    const connectButton = document.createElement("button");
-    connectButton.textContent = "Connect";
-    connectButton.classList.add("button");
-
-    joinForm.append(
-        joinFormHeading, 
-        roomNameInputJoin, 
-        roomPasswordInputJoin, 
-        usernameInputJoin, 
-        connectButton
-    );
-
-    // Formular zum Löschen eines Rooms
-    const deleteForm = document.createElement("form");
-    createAndJoinDiv.append(deleteForm);
-
-    const deleteFormHeading = document.createElement("h2");
-    deleteFormHeading.textContent = "Delete room";
-
-    const roomNameInputDelete = document.createElement("input");
-    roomNameInputDelete.type = "text";
-    roomNameInputDelete.placeholder = "Room Name";
-
-    const roomPasswordInputDelete = document.createElement("Input");
-    roomPasswordInputDelete.type = "text";
-    roomPasswordInputDelete.placeholder = "Password (optional)";
-
-    const usernameInputDelete = document.createElement("input");
-    usernameInputDelete.type = "text";
-    usernameInputDelete.placeholder = "Your username";
+    const menuContainer = document.getElementById("menu-container");
     
-    const deleteRoomButton = document.createElement("button");
-    deleteRoomButton.textContent = "Delete Room";
-    deleteRoomButton.classList.add("button");
+    const roomNameCreate = document.getElementById("room-name-create");
+    const roomNameJoin = document.getElementById("room-name-join");
+    const roomNameDelete = document.getElementById("room-name-delete");
 
-    const roomId = document.createElement("input");
-    roomId.type = "text";
-    roomId.placeholder = "Room Id";
+    const passwordCreate = document.getElementById("password-create");
+    const passwordJoin = document.getElementById("password-join");
+    const passwordDelete = document.getElementById("password-delete");
 
-    deleteForm.append(
-        deleteFormHeading, 
-        roomNameInputDelete, 
-        roomPasswordInputDelete, 
-        usernameInputDelete, 
-        roomId,
-        deleteRoomButton
-    );
+    const usernameCreate = document.getElementById("username-create");
+    const usernameJoin = document.getElementById("username-join");
+    const usernameDelete = document.getElementById("username-delete");
 
-    // Keydown für Create-Inputs
-    roomNameInputCreate.addEventListener("keydown", function(event) {
-        if (event.key == "keydown") {
+    const roomId = document.getElementById("room-id");
+
+    const createButton = document.getElementById("create-button");
+    const connectButton = document.getElementById("connect-button");
+    const deleteButton = document.getElementById("delete-button");
+
+    usernameCreate.addEventListener("keydown", function (event) {
+        if (event.key == "Enter") {
             event.preventDefault();
             createButton.click();
         }
     });
 
-    roomPasswordInputCreate.addEventListener("keydown", function(event) {
-        if (event.key == "keydown") {
+    usernameJoin.addEventListener("keydown", function (event) {
+        if (event.key == "Enter") {
             event.preventDefault();
-            createButton.click();
+            connectButton.click();
         }
     });
 
-    usernameInputCreate.addEventListener("keydown", function(event) {
-        if (event.key == "keydown") {
+    usernameDelete.addEventListener("keydown", function (event) {
+        if (event.key == "Enter") {
             event.preventDefault();
-            createButton.click();
+            deleteButton.click();
         }
     });
 
-    // Keydown für Join-Inputs
-    roomNameInputJoin.addEventListener("keydown", function(event) {
-        if (event.key == "keydown") {
-            connectButton.click();
-        }
-    });
-
-    roomPasswordInputJoin.addEventListener("keydown", function(event) {
-        if (event.key == "keydown") {
-            connectButton.click();
-        }
-    });
-
-    usernameInputJoin.addEventListener("keydown", function(event) {
-        if (event.key == "keydown") {
-            connectButton.click();
-        }
-    });
-
-    // Keydown für Delete-Inputs
-    roomNameInputDelete.addEventListener("keydown", function(event) {
-        if (event.key == "keydown") {
-            deleteRoomButton.click();
-        }
-    });
-
-    roomPasswordInputDelete.addEventListener("keydown", function(event) {
-        if (event.key == "keydown") {
-            deleteRoomButton.click();
-        }
-    });
-
-    usernameInputDelete.addEventListener("keydown", function(event) {
-        if (event.key == "keydown") {
-            deleteRoomButton.click();
-        }
-    });
-
-    roomId.addEventListener("keydown", function(event) {
-        if (event.key == "keydown") {
-            deleteRoomButton.click();
-        }
-    });
-    
-
+    // Creates a room
     createButton.addEventListener("click", (event) => {
         event.preventDefault();
 
@@ -177,9 +52,9 @@ window.addEventListener("DOMContentLoaded", () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                roomname: roomNameInputCreate.value,
-                password: roomPasswordInputCreate.value,
-                username: usernameInputCreate.value,
+                roomname: roomNameCreate.value,
+                password: passwordCreate.value,
+                username: usernameCreate.value,
             })
         })
         .then(response => response.json())
@@ -190,7 +65,8 @@ window.addEventListener("DOMContentLoaded", () => {
         .catch(error => console.error('Error: ', error));
     });
 
-    deleteRoomButton.addEventListener("click", (event) => {
+    // Deletes a room
+    deleteButton.addEventListener("click", (event) => {
         event.preventDefault();
 
         fetch("http://localhost:8000/delete-room", {
@@ -200,7 +76,7 @@ window.addEventListener("DOMContentLoaded", () => {
             },
             body: JSON.stringify({
                 room_id: roomId.value,
-                password: roomPasswordInputCreate.value,
+                password: passwordCreate.value,
             })
         })
         .then(response => response.json())
@@ -210,10 +86,11 @@ window.addEventListener("DOMContentLoaded", () => {
         .catch(error => console.error('Error: ', error));
     });
 
+    // Connects with room
     connectButton.addEventListener("click", (event) => {
         event.preventDefault();
 
-        createAndJoinDiv.style.display = "none";
+        menuContainer.style.display = "none";
 
         const ws = new WebSocket(`ws://localhost:8000/ws/${roomNameInputCreate.value}`);
 
