@@ -70,18 +70,21 @@ button:hover {
     display: flex;
     justify-content: center;
     align-content: center;
+    width: 100%;
 }
 
 .join-form {
-    display: flex;
+   display: flex;
     justify-content: center;
     align-content: center;
+    width: 100%;
 }
 
 .delete-form {
     display: flex;
     justify-content: center;
     align-content: center;
+    width: 100%;
 }
 
 .menu-container input {
