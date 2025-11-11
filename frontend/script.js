@@ -61,6 +61,7 @@ window.addEventListener("DOMContentLoaded", () => {
         .then(data => {
             document.getElementById("message").textContent = data.message;
             document.getElementById("room-id").textContent = "Room ID: " + data.room_id;
+            document.getElementById("keep-room-id-note").textContent = "Please save it to manage your room later!";
         })
         .catch(error => console.error('Error: ', error));
     });

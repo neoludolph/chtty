@@ -34,6 +34,9 @@ header a:hover {
 h2 {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 32px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
 }
 
 button {
@@ -77,6 +80,12 @@ button:hover {
     align-content: center;
 }
 
+input {
+    border: 1px solid black;
+    padding: 8px;
+    border-radius: 10px;
+}
+
 #message {
     margin-top: 20px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -97,7 +106,7 @@ button:hover {
     align-content: center;
 }
 
-#keep-room-id {
+#keep-room-id-note {
     margin-top: 20px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 20px;
