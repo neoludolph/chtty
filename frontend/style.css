@@ -36,7 +36,7 @@ h2 {
     font-size: 32px;
     display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
     border: 1px solid black;
     border-radius: 10px;
     background-color: rgb(61, 61, 61);
@@ -56,6 +56,9 @@ button {
     background-color: rgb(73, 73, 73);
     transition: all 0.3s ease;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 button:hover {
@@ -69,21 +72,24 @@ button:hover {
 .create-form {
     display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
+    flex-direction: column;
     width: 100%;
 }
 
 .join-form {
    display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
+    flex-direction: column;
     width: 100%;
 }
 
 .delete-form {
     display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
+    flex-direction: column;
     width: 100%;
 }
 
@@ -95,7 +101,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-content: center;
+    align-items: center;
 }
 
 #message {
@@ -105,7 +111,7 @@ button:hover {
     font-weight: 800;
     display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
 }
 
 #room-id {
@@ -115,7 +121,7 @@ button:hover {
     font-weight: 800;
     display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
 }
 
 #keep-room-id-note {
@@ -125,6 +131,6 @@ button:hover {
     font-weight: 800;
     display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
 }
 
