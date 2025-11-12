@@ -56,9 +56,6 @@ button {
     background-color: rgb(73, 73, 73);
     transition: all 0.3s ease;
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 button:hover {
@@ -67,6 +64,10 @@ button:hover {
 
 .menu-container {
     margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
 }
 
 .create-form {
