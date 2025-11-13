@@ -103,12 +103,6 @@ cd ~/projects/chtty/backend
 pip install -r requirements.txt
 ```
 
-Development dependencies:
-
-```bash
-pip install -r requirements-dev.txt
-```
-
 ---
 
 ## Frontend setup for devs
