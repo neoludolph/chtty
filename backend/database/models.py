@@ -10,7 +10,7 @@ rooms = db.Table('rooms', metadata,
 
 users = db.Table('users', metadata,
     db.Column('user_id', db.String(36), primary_key=True),
-    db.Column('username', db.String),
+    db.Column('username', db.String(30)),
     db.Column('room_id', db.ForeignKey('rooms.room_id'))
 )
 
