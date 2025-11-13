@@ -130,6 +130,11 @@ button:hover {
     align-self: center;
 }
 
+input::placeholder {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    letter-spacing: 0.5px;
+}
+
 #message {
     margin-top: 20px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
