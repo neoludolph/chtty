@@ -53,7 +53,7 @@ button {
     padding: 5px;
     padding-left: 10px;
     padding-right: 10px;
-    border: 2px solid black;
+    border: 1px solid black;
     border-radius: 20px;
     color: white;
     background-color: rgb(73, 73, 73);
@@ -168,6 +168,4 @@ input::placeholder {
 #github-mark {
     background-color: whitesmoke;
     border: unset;
-    display: flex;
-    justify-content: flex-end;
 }
