@@ -23,8 +23,8 @@ header a {
 }
 
 header a:hover {
-    background-color:rgba(73, 73, 73, 0.411);
-    filter: drop-shadow(0 0 8px rgb(61, 61, 61));
+    background-color:rgb(85, 85, 85);
+    border: 1px solid black;
 }
 
 body {
@@ -165,3 +165,9 @@ input::placeholder {
     align-self: center;
 }
 
+#github-mark {
+    background-color: whitesmoke;
+    border: unset;
+    display: flex;
+    justify-content: flex-end;
+}
