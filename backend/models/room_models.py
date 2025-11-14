@@ -1,10 +1,9 @@
 from pydantic import BaseModel
-from typing import Union
 
 class RoomData(BaseModel):
     username: str
     roomname: str
-    password: Union[str, None]
+    password: str
 
 class RoomDataResponse(BaseModel):
     room_id: str
@@ -13,3 +12,4 @@ class RoomDataResponse(BaseModel):
 class DeleteRoom(BaseModel):
     room_id: str
     password: str
+

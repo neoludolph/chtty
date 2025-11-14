@@ -59,7 +59,9 @@ app.add_middleware(
 
 @app.websocket("")
 async def chat():
-    
+
+@app.post("/join")
+async def join_room_():
 
 @app.post("/create-room", response_model=RoomDataResponse)
 async def create_room_(room_data: RoomData):
