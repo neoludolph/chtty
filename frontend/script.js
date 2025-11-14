@@ -15,8 +15,6 @@ window.addEventListener("DOMContentLoaded", () => {
     const usernameJoin = document.getElementById("username-join");
     const usernameDelete = document.getElementById("username-delete");
 
-    const roomId = document.getElementById("room-id-");
-
     const createButton = document.getElementById("create-button");
     const connectButton = document.getElementById("connect-button");
     const deleteButton = document.getElementById("delete-button");
@@ -52,16 +50,13 @@ window.addEventListener("DOMContentLoaded", () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                roomname: roomNameCreate.value,
+                roomname_create: roomNameCreate.value,
                 password: passwordCreate.value,
-                username: usernameCreate.value,
             })
         })
         .then(response => response.json())
         .then(data => {
             document.getElementById("message").textContent = data.message;
-            document.getElementById("room-id").textContent = "Room ID: " + data.room_id;
-            document.getElementById("keep-room-id-note").textContent = "Please save it to manage your room later!";
         })
         .catch(error => console.error('Error: ', error));
     });
@@ -76,7 +71,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                room_id: roomId.value,
+                roomname_delete: roomNameDelete.value,
                 password: passwordCreate.value,
             })
         })

@@ -22,21 +22,18 @@ def create_db():
 def dispose_db():
     engine.dispose()
 
-def create_room(room_name, room_password, username):
-    room_id = uuid.uuid4()
-    user_id = uuid.uuid4()
+def create_room(roomname, room_password):
     with engine.begin() as connect:
-        connect.execute(rooms.insert().values(room_id=str(room_id), room_name=room_name, password=room_password))
-        connect.execute(users.insert().values(user_id=str(user_id), username=username, room_id=str(room_id)))
+        connect.execute(rooms.insert().values(room_name=roomname, password=room_password))
     message = "Room successfully created!"
-    response = RoomDataResponse(room_id=str(room_id), message=message)
+    response = RoomDataResponse(message=message)
     return response
 
-def delete_room(room_id, password):
+def delete_room(roomname, password):
     with engine.begin() as connect:
-        connect.execute(delete(rooms).where(rooms.c.room_id == room_id))
+        connect.execute(delete(rooms).where(rooms.c.room_name == roomname))
     message = "Room successfully deleted!"
-    response = RoomDataResponse(room_id=str(room_id), message=message)
+    response = RoomDataResponse(message=message)
     return response
 
 def delete_rooms_table_content():

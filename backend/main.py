@@ -57,20 +57,20 @@ app.add_middleware(
 #     if not rooms[room_id]:
 #         del rooms[room_id]
 
-@app.websocket("")
-async def chat():
+# @app.websocket("")
+# async def chat():
 
-@app.post("/join")
-async def join_room_():
+# @app.post("/join")
+# async def join_room_():
 
 @app.post("/create-room", response_model=RoomDataResponse)
 async def create_room_(room_data: RoomData):
-    result = create_room(room_data.roomname, room_data.password, room_data.username)
+    result = create_room(room_data.roomname, room_data.password)
     return result
 
 @app.delete("/delete-room", response_model=RoomDataResponse)
-async def delete_room_(room_data: DeleteRoom):
-    result = delete_room(room_data.room_id, room_data.password)
+async def delete_room_(room_data: RoomData):
+    result = delete_room(room_data.roomname, room_data.password)
     return result
 
 @app.delete("/delete_rooms_table")
