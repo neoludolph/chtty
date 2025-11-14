@@ -57,6 +57,10 @@ app.add_middleware(
 #     if not rooms[room_id]:
 #         del rooms[room_id]
 
+@app.websocket("")
+async def chat():
+    
+
 @app.post("/create-room", response_model=RoomDataResponse)
 async def create_room_(room_data: RoomData):
     result = create_room(room_data.roomname, room_data.password, room_data.username)
