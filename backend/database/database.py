@@ -30,11 +30,13 @@ def create_room(roomname, room_password):
     return response
 
 def delete_room(roomname, password):
-    with engine.begin() as connect:
-        connect.execute(delete(rooms).where(rooms.c.room_name == roomname))
-    message = "Room successfully deleted!"
-    response = RoomDataResponse(message=message)
-    return response
+    # wenn password == password in db, dann weiter!
+    if password == rooms.password:
+        with engine.begin() as connect:
+            connect.execute(delete(rooms).where(rooms.c.room_name == roomname))
+        message = "Room successfully deleted!"
+        response = RoomDataResponse(message=message)
+        return response
 
 def delete_rooms_table_content():
     with engine.begin() as connect:
@@ -52,4 +54,12 @@ def delete_messages_table_content():
     with engine.begin() as connect:
         connect.execute(delete(messages))
     message = "Table content of messages successfully deleted!"
+    return message
+
+def delete_all_tables_content():
+    with engine.begin() as connect:
+        connect.execute(delete(messages))
+        connect.execute(delete(users))
+        connect.execute(delete(rooms))
+    message = "Content of all tables deleted!"
     return message

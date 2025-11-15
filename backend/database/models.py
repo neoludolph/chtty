@@ -4,7 +4,7 @@ metadata = db.MetaData()
 
 rooms = db.Table('rooms', metadata,
     db.Column('room_name', db.String(30), primary_key=True),
-    db.Column('password', db.String(50), nullable=True)
+    db.Column('password', db.String(50))
 ) 
 
 users = db.Table('users', metadata,
