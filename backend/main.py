@@ -2,7 +2,7 @@ from fastapi import FastAPI, WebSocket
 from fastapi import WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from backend.models.room_models import RoomData, RoomDataResponse
+from backend.models.room_models import RoomData, JoinRoomData, RoomDataResponse 
 from backend.database.database import (
     create_db, 
     dispose_db, 
@@ -11,7 +11,10 @@ from backend.database.database import (
     delete_rooms_table_content, 
     delete_users_table_content, 
     delete_messages_table_content, 
-    delete_all_tables_content
+    delete_all_tables_content,
+    check_if_exists_in_db,
+    delete_db,
+    db_path
 )
 import json
 
@@ -66,11 +69,10 @@ app.add_middleware(
 #     if not rooms[room_id]:
 #         del rooms[room_id]
 
-# @app.websocket("")
-# async def chat():
-
-# @app.post("/join")
-# async def join_room_():
+# @app.websocket("/websocket")
+# async def chat(websocket: WebSocket, join_room_data: JoinRoomData):
+#     await websocket.accept()
+#     if join_room_data.roomname:
 
 @app.post("/create-room", response_model=RoomDataResponse)
 async def create_room_(room_data: RoomData):
@@ -101,3 +103,17 @@ async def delete_messages_table_content_():
 async def delete_all_tables_content_():
     result = delete_all_tables_content()
     return result
+
+@app.delete("/delete_db")
+async def delete_db_():
+    result = delete_db(db_path)
+    return result
+
+@app.post("/test")
+async def test(roomname):
+    result = check_if_exists_in_db(roomname)
+    if (result is True):
+        return "Room existiert"
+    else:
+        return "Room existiert nicht"
+    
