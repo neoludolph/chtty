@@ -65,7 +65,7 @@ button {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 15px;
     font-weight: 650;
-    transition: all 0.3s ease;
+    transition: all 0.18s ease;
     cursor: pointer;
 }
 
