@@ -12,7 +12,8 @@ from backend.database.database import (
     delete_users_table_content, 
     delete_messages_table_content, 
     delete_all_tables_content,
-    check_if_exists_in_db,
+    check_if_room_exists,
+    check_if_password_exists_in_room,
     delete_db,
     db_path
 )
@@ -69,10 +70,13 @@ app.add_middleware(
 #     if not rooms[room_id]:
 #         del rooms[room_id]
 
-# @app.websocket("/websocket")
-# async def chat(websocket: WebSocket, join_room_data: JoinRoomData):
-#     await websocket.accept()
-#     if join_room_data.roomname:
+@app.websocket("/websocket")
+async def chat(websocket: WebSocket, join_room_data: JoinRoomData):
+    await websocket.accept()
+    parsed_data = json.loads(join_room_data)
+    room_check = check_if_room_exists(parsed_data.get("roomname"))
+    if (room_check is True):
+        if ()
 
 @app.post("/create-room", response_model=RoomDataResponse)
 async def create_room_(room_data: RoomData):

@@ -76,7 +76,7 @@ def delete_db(db_path):
         return "Database does not exist!"
 
 # For DB checks
-def check_if_exists_in_db(roomname):
+def check_if_room_exists(roomname):
     check = sqla.select(rooms.c.roomname).where(rooms.c.roomname == roomname)
     with engine.begin() as connect:
         result = connect.execute(check).first()
@@ -84,3 +84,14 @@ def check_if_exists_in_db(roomname):
         return False
     else:
         return True 
+    
+def check_if_password_exists_in_room(password, roomname):
+    check = sqla.select(rooms.c.password).where(rooms.c.roomname == roomname)
+    with engine.begin() as connect:
+        result = connect.execute(check).first()
+    if (result is None):
+        return False
+    else:
+        return True 
+    
+def check_if_password_is_correct():
