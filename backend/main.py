@@ -13,7 +13,7 @@ from backend.database.database import (
     delete_messages_table_content, 
     delete_all_tables_content,
     check_if_room_exists,
-    check_if_password_exists_in_room,
+    check_if_password_is_correct,
     delete_db,
     db_path
 )
@@ -72,11 +72,16 @@ app.add_middleware(
 
 @app.websocket("/websocket")
 async def chat(websocket: WebSocket, join_room_data: JoinRoomData):
-    await websocket.accept()
     parsed_data = json.loads(join_room_data)
     room_check = check_if_room_exists(parsed_data.get("roomname"))
     if (room_check is True):
-        if ()
+        password_check = check_if_password_is_correct(join_room_data.roomname, join_room_data.password)
+        if (password_check is True):
+            await websocket.accept()
+        else:
+            return "Wrong password! Please try again"
+    else:
+        return "Room does not exist!"
 
 @app.post("/create-room", response_model=RoomDataResponse)
 async def create_room_(room_data: RoomData):
@@ -115,7 +120,7 @@ async def delete_db_():
 
 @app.post("/test")
 async def test(roomname):
-    result = check_if_exists_in_db(roomname)
+    result = check_if_room_exists(roomname)
     if (result is True):
         return "Room existiert"
     else:
