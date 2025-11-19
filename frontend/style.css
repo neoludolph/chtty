@@ -36,8 +36,9 @@ body {
 }
 
 h2 {
-    padding-left: 5px;
-    padding-right: 5px;
+    margin-top: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
     border: 1px solid black;
     border-radius: 10px;
     background-color: rgb(61, 61, 61);
@@ -50,6 +51,7 @@ h2 {
 }
 
 h4 {
+    margin-top: 1px;
     margin: 4px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
@@ -74,7 +76,7 @@ button:hover {
 }
 
 .menu-container {
-    margin-top: 50px;
+    margin-top: 100px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -128,7 +130,8 @@ button:hover {
 }
 
 .create-form button, .join-form button, .delete-form button {
-    margin-top: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     align-self: center;
 }
 
@@ -148,16 +151,6 @@ input::placeholder {
 }
 
 #room-id {
-    margin-top: 20px;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 20px;
-    font-weight: 800;
-    display: flex;
-    justify-content: center;
-    align-self: center;
-}
-
-#keep-room-id-note {
     margin-top: 20px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 20px;
