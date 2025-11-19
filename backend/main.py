@@ -46,24 +46,26 @@ app.add_middleware(
 rooms = {}
 
 @app.websocket("/ws")
-async def chat(websocket: WebSocket, room_data: JoinRoomData):
+async def chat(websocket: WebSocket):
     await websocket.accept()
-    room_check = check_if_room_exists(room_data.roomname)
+    join_data = await websocket.receive_text()
+    join_data_pydantic = JoinRoomData.model_validate_json(join_data)
+    room_check = check_if_room_exists(join_data_pydantic.roomname)
     if (room_check is True):
-        password_check = check_if_password_is_correct(room_data.roomname, room_data.password)
+        password_check = check_if_password_is_correct(join_data_pydantic.roomname, join_data_pydantic.password)
         if (password_check is True):
-            rooms[room_data.roomname].add(websocket)
+            rooms[join_data_pydantic.roomname].add(websocket)
             try:
                 while True:
-                    received_message: ChatMessage = await websocket.receive_text()
-                    for client in rooms[room_data.roomname]:
+                    received_message = await websocket.receive_text()
+                    for client in rooms[join_data_pydantic.roomname]:
                         if (client is websocket):
                             continue
                         await client.send_text(received_message)
             except WebSocketDisconnect:
-                rooms[room_data.roomname].discard(websocket)
-            if not rooms[room_data.roomname]:
-                del rooms[room_data.roomname]
+                rooms[join_data_pydantic.roomname].discard(websocket)
+            if not rooms[join_data_pydantic.roomname]:
+                del rooms[join_data_pydantic.roomname]
         else:
             password_error_data = {
                 "type": "password_error",
