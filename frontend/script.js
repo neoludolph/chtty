@@ -1,7 +1,7 @@
 'use strict';
 
 window.addEventListener("DOMContentLoaded", () => {
-    const menuContainer = document.getElementById("menu-container");
+    const menuContainer = document.getElementById("menu-container-id");
 
     const roomNameCreate = document.getElementById("room-name-create");
     const roomNameJoin = document.getElementById("room-name-join");
@@ -11,15 +11,13 @@ window.addEventListener("DOMContentLoaded", () => {
     const passwordJoin = document.getElementById("password-join");
     const passwordDelete = document.getElementById("password-delete");
 
-    const usernameCreate = document.getElementById("username-create");
     const usernameJoin = document.getElementById("username-join");
-    const usernameDelete = document.getElementById("username-delete");
 
     const createButton = document.getElementById("create-button");
     const connectButton = document.getElementById("connect-button");
     const deleteButton = document.getElementById("delete-button");
 
-    usernameCreate.addEventListener("keydown", function (event) {
+    passwordCreate.addEventListener("keydown", function (event) {
         if (event.key == "Enter") {
             event.preventDefault();
             createButton.click();
@@ -33,7 +31,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    usernameDelete.addEventListener("keydown", function (event) {
+    passwordDelete.addEventListener("keydown", function (event) {
         if (event.key == "Enter") {
             event.preventDefault();
             deleteButton.click();
@@ -50,7 +48,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                roomname_create: roomNameCreate.value,
+                roomname: roomNameCreate.value,
                 password: passwordCreate.value,
             })
         })
@@ -71,8 +69,8 @@ window.addEventListener("DOMContentLoaded", () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                roomname_delete: roomNameDelete.value,
-                password: passwordCreate.value,
+                roomname: roomNameDelete.value,
+                password: passwordDelete.value,
             })
         })
         .then(response => response.json())
@@ -82,45 +80,45 @@ window.addEventListener("DOMContentLoaded", () => {
         .catch(error => console.error('Error: ', error));
     });
 
-    // Connects with room
+    // Connection and chat
     connectButton.addEventListener("click", (event) => {
         event.preventDefault();
 
         menuContainer.style.display = "none";
 
-        const ws = new WebSocket(`ws://localhost:8000/ws/${roomNameInputCreate.value}`);
+        const ws = new WebSocket(`ws://localhost:8000/ws`);
 
         ws.onopen = () => {
             ws.send(JSON.stringify({
                 type: "join",
-                username: usernameInputCreate.value,
-                roomName: roomNameInputCreate.value,
-                roomPassword: roomPasswordInputCreate.value
+                roomname: roomNameJoin.value,
+                password: passwordJoin.value,
+                username: usernameJoin.value
             }));
 
-            const message = document.createElement("input");
-            message.type = "text";
-            message.placeholder = "Your message...";
+            const chatMessage = document.createElement("input");
+            chatMessage.type = "text";
+            chatMessage.placeholder = "Your message...";
 
-            const sendButton = document.createElement("button");
-            sendButton.type = "button";
-            sendButton.textContent = "Send";
+            const sendMessageButton = document.createElement("button");
+            sendMessageButton.type = "button";
+            sendMessageButton.textContent = "Send";
 
             const chatDiv = document.getElementById("chat-container");
 
-            chatDiv.append(message, sendButton);
+            chatDiv.append(chatMessage, sendMessageButton);
 
             sendButton.addEventListener("click", () => {
                 ws.send(JSON.stringify({
-                    type: "message",
-                    message: message.value,
-                    userName: usernameInputCreate.value
+                    type: "chat_message",
+                    username: usernameJoin.value,
+                    chat_message: chatMessage.value
                 }));
 
                 const p = document.createElement("p");
-                p.textContent = `You: ${message.value}`;
+                p.textContent = `You: ${chatMessage.value}`;
                 chatDiv.append(p);
-                message.value = "";
+                chatMessage.value = "";
             });
 
             ws.onmessage = (event) => {
@@ -130,11 +128,15 @@ window.addEventListener("DOMContentLoaded", () => {
                     const username = eventData.user_name;
                     p.textContent = `${username} entered the chat!`;
                     chatDiv.append(p);
-                } else if (eventData.type === "message") {
-                    const username = eventData.user_name;
-                    const message = eventData.message;
-                    p.textContent = `${eventData.user_name}: ${eventData.message}`;
+                } else if (eventData.type === "chat_message") {
+                    const username = eventData.username;
+                    const chatMessage = eventData.chat_message;
+                    p.textContent = `${username}: ${chatMessage}`;
                     chatDiv.append(p);
+                } else if (eventData.type === "password_error") {
+                    p.appendChild(eventData.error_message)
+                } else if (eventData.type === "room_error") {
+                    p.appendChild(eventData.error_message)
                 }
             };
         };

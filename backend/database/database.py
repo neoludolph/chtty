@@ -28,7 +28,7 @@ def create_room(roomname, password):
     with engine.begin() as connect:
         connect.execute(rooms.insert().values(roomname=roomname, password=password))
     message = "Room successfully created!"
-    response = RoomDataResponse(message=message)
+    response = RoomDataResponse(response_message=message)
     return response
 
 def delete_room(roomname, password):
@@ -38,7 +38,7 @@ def delete_room(roomname, password):
         with engine.begin() as connect:
             connect.execute(sqla.delete(rooms).where(rooms.c.room_name == roomname))
         message = "Room successfully deleted!"
-        response = RoomDataResponse(message=message)
+        response = RoomDataResponse(response_message=message)
         return response
 
 # For API-Routes

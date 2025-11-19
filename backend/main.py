@@ -2,7 +2,7 @@ from fastapi import FastAPI, WebSocket
 from fastapi import WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from backend.models.room_models import RoomData, JoinRoomData, RoomDataResponse 
+from backend.models.room_models import RoomData, JoinRoomData, RoomDataResponse , ChatMessage
 from backend.database.database import (
     create_db, 
     dispose_db, 
@@ -18,6 +18,7 @@ from backend.database.database import (
     db_path
 )
 import json
+from typing import Set
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -29,62 +30,56 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-origins = [
-    "http://localhost:8000",
-    "http://localhost:5173",
-]
+# origins = [
+#     "http://localhost:8000",
+#     "http://localhost:5173",
+# ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# @app.websocket("/ws/{room_id}")
-# async def websocket_endpoint(websocket: WebSocket, roomname: str):
-#     await websocket.accept()
-#     if room_id not in rooms:
-#         rooms[room_id] = set()
-#     rooms[room_id].add(websocket)
-#     try:
-#         while True:
-#             data = await websocket.receive_text()
-#             parsed_data = json.loads(data)
-#             if parsed_data.get('type') == 'join':
-#                 username = parsed_data.get('username')
-#                 dumped_data_join = json.dumps(parsed_data)
-#                 for client in rooms[room_id]:
-#                     if client is websocket:
-#                         continue         
-#                     await client.send_text(dumped_data_join)
-#             elif parsed_data.get('type') == 'message':
-#                 dumped_data_message = json.dumps(parsed_data)
-#                 for client in rooms[room_id]:
-#                     if client is websocket:
-#                         continue
-#                     await client.send_text(dumped_data_message)
-#     except WebSocketDisconnect:
-#         rooms[room_id].discard(websocket)
-#     if not rooms[room_id]:
-#         del rooms[room_id]
+rooms = {}
 
-@app.websocket("/websocket")
-async def chat(websocket: WebSocket, join_room_data: JoinRoomData):
-    parsed_data = json.loads(join_room_data)
-    room_check = check_if_room_exists(parsed_data.get("roomname"))
+@app.websocket("/ws")
+async def chat(websocket: WebSocket, room_data: JoinRoomData):
+    await websocket.accept()
+    room_check = check_if_room_exists(room_data.roomname)
     if (room_check is True):
-        password_check = check_if_password_is_correct(join_room_data.roomname, join_room_data.password)
+        password_check = check_if_password_is_correct(room_data.roomname, room_data.password)
         if (password_check is True):
-            await websocket.accept()
+            rooms[room_data.roomname].add(websocket)
+            try:
+                while True:
+                    received_message: ChatMessage = await websocket.receive_text()
+                    for client in rooms[room_data.roomname]:
+                        if (client is websocket):
+                            continue
+                        await client.send_text(received_message)
+            except WebSocketDisconnect:
+                rooms[room_data.roomname].discard(websocket)
+            if not rooms[room_data.roomname]:
+                del rooms[room_data.roomname]
         else:
-            return "Wrong password! Please try again"
+            password_error_data = {
+                "type": "password_error",
+                "error_message": "Wrong password! Please try again"
+            }
+            await websocket.send_json(password_error_data)
     else:
-        return "Room does not exist!"
+        room_error_data = {
+            "type": "room_error",
+            "error_message": "This room does not exist!"
+        }
+        await websocket.send_json(room_error_data)
 
 @app.post("/create-room", response_model=RoomDataResponse)
 async def create_room_(room_data: RoomData):
+    rooms[room_data.roomname] = set()
     result = create_room(room_data.roomname, room_data.password)
     return result
 
@@ -117,12 +112,3 @@ async def delete_all_tables_content_():
 async def delete_db_():
     result = delete_db(db_path)
     return result
-
-@app.post("/test")
-async def test(roomname):
-    result = check_if_room_exists(roomname)
-    if (result is True):
-        return "Room existiert"
-    else:
-        return "Room existiert nicht"
-    

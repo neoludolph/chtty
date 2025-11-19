@@ -5,10 +5,16 @@ class RoomData(BaseModel):
     password: str
 
 class JoinRoomData(BaseModel):
+    type: str
     roomname: str
     password: str
     username: str
 
+class ChatMessage(BaseModel):
+    type: str
+    username: str
+    chat_message: str
+
 class RoomDataResponse(BaseModel):
-    message: str
+    response_message: str
 
