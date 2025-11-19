@@ -108,7 +108,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
             chatDiv.append(chatMessage, sendMessageButton);
 
-            sendButton.addEventListener("click", () => {
+            sendMessageButton.addEventListener("click", () => {
                 ws.send(JSON.stringify({
                     type: "chat_message",
                     username: usernameJoin.value,
