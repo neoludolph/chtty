@@ -1,6 +1,6 @@
 header {
     height: 85px;
-    box-shadow: 4px 4px 9px 1px rgba(0,0,0,0.23);
+    box-shadow: 4px 4px 9px 1px rgba(0, 0, 0, 0.23);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,7 +26,7 @@ header a {
 }
 
 header a:hover {
-    background-color:rgb(85, 85, 85);
+    background-color: rgb(85, 85, 85);
     border: 1px solid black;
 }
 
@@ -129,7 +129,9 @@ button:hover {
     flex-direction: column;
 }
 
-.create-form button, .join-form button, .delete-form button {
+.create-form button,
+.join-form button,
+.delete-form button {
     margin-top: 20px;
     margin-bottom: 20px;
     align-self: center;
@@ -163,4 +165,11 @@ input::placeholder {
 #github-mark {
     background-color: whitesmoke;
     border: unset;
+}
+
+#chat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

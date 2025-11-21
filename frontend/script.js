@@ -99,6 +99,7 @@ window.addEventListener("DOMContentLoaded", () => {
             const chatMessage = document.createElement("input");
             chatMessage.type = "text";
             chatMessage.placeholder = "Your message...";
+            chatMessage.classList.add("chat-input")
 
             const sendMessageButton = document.createElement("button");
             sendMessageButton.type = "button";
