@@ -105,9 +105,10 @@ window.addEventListener("DOMContentLoaded", () => {
             sendMessageButton.type = "button";
             sendMessageButton.textContent = "Send";
 
-            const chatDiv = document.getElementById("chat-container");
+            const messageArea = document.getElementById("message-area");
+            const inputArea = document.getElementById("input-area");
 
-            chatDiv.append(chatMessage, sendMessageButton);
+            inputArea.append(chatMessage, sendMessageButton);
 
             sendMessageButton.addEventListener("click", () => {
                 ws.send(JSON.stringify({
@@ -118,7 +119,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
                 const p = document.createElement("p");
                 p.textContent = `You: ${chatMessage.value}`;
-                chatDiv.append(p);
+                messageArea.append(p);
                 chatMessage.value = "";
             });
 
@@ -128,12 +129,12 @@ window.addEventListener("DOMContentLoaded", () => {
                 if (eventData.type === "join") {
                     const username = eventData.user_name;
                     p.textContent = `${username} entered the chat!`;
-                    chatDiv.append(p);
+                    messageArea.append(p);
                 } else if (eventData.type === "chat_message") {
                     const username = eventData.username;
                     const chatMessage = eventData.chat_message;
                     p.textContent = `${username}: ${chatMessage}`;
-                    chatDiv.append(p);
+                    messageArea.append(p);
                 } else if (eventData.type === "password_error") {
                     p.appendChild(eventData.error_message)
                 } else if (eventData.type === "room_error") {
@@ -143,4 +144,3 @@ window.addEventListener("DOMContentLoaded", () => {
         };
     });
 });
-
