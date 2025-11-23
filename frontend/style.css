@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 header {
     height: 85px;
     box-shadow: 4px 4px 9px 1px rgba(0, 0, 0, 0.23);
@@ -168,8 +172,39 @@ input::placeholder {
 }
 
 #chat-container {
+    height: calc(100vh - 85px);
+
     display: flex;
     flex-direction: column;
-    justify-content: center;
+
+    justify-content: flex-start;
     align-items: center;
+}
+
+#message-area {
+    flex-grow: 1;
+    overflow-y: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+#input-area {
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    border-top: 1px solid #ccc;
+}
+
+#input-area button {
+    margin-left: 10px;
+}
+
+#input-area input {
+    border: 1px solid black;
+    border-radius: 10px;
 }
