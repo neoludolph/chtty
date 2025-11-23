@@ -84,6 +84,15 @@ window.addEventListener("DOMContentLoaded", () => {
     connectButton.addEventListener("click", (event) => {
         event.preventDefault();
 
+        if (roomNameJoin.value == "" || passwordJoin.value == "" || usernameJoin.value == "") {
+            const fillInAllFieldsDemandDiv = document.getElementById("fill-all-fields-demand");
+            const p = document.createElement("p");
+            p.textContent = "Please fill in all fields!";
+            fillInAllFieldsDemandDiv.textContent = "";
+            fillInAllFieldsDemandDiv.append(p); 
+            return;
+        }
+
         menuContainer.style.display = "none";
 
         const ws = new WebSocket(`ws://localhost:8000/ws`);

@@ -192,7 +192,10 @@ input::placeholder {
 }
 
 #message-area p {
-
+    margin-top: 1px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
 }
 
 #input-area {
