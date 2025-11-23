@@ -2,7 +2,7 @@ from fastapi import FastAPI, WebSocket
 from fastapi import WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from backend.models.room_models import RoomData, JoinRoomData, RoomDataResponse , ChatMessage
+from backend.models.room_models import RoomData, JoinRoomData, RoomDataResponse , ChatMessage, CheckResult
 from backend.database.database import (
     create_db, 
     dispose_db, 
@@ -115,5 +115,18 @@ async def delete_db_():
     result = delete_db(db_path)
     return result
 
-@app.get("/get_checks")
-async def get_checks():
+@app.post("/get_checks", response_model=CheckResult)
+async def get_checks(room_data: RoomData):
+    check_room = check_if_room_exists(room_data.roomname)
+    check_password = check_if_password_is_correct(room_data.roomname, room_data.password)
+    if (check_room is True and check_password is True):
+        response = CheckResult(result=True)
+        return response
+    elif (check_room is True and check_password is False):
+        wrong_password = "The entered password is wrong!"
+        response = CheckResult(result=False, error_message=wrong_password)
+        return response
+    else:
+        no_room = "Room does not exist!"
+        response = CheckResult(result=False, error_message=no_room)
+        return response

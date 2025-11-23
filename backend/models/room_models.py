@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Union
 
 class RoomData(BaseModel):
     roomname: str
@@ -18,3 +19,6 @@ class ChatMessage(BaseModel):
 class RoomDataResponse(BaseModel):
     response_message: str
 
+class CheckResult(BaseModel):
+    result: bool
+    error_message: str | None = None

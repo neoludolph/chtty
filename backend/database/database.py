@@ -32,8 +32,6 @@ def create_room(roomname, password):
     return response
 
 def delete_room(roomname, password):
-    # wenn password für roomname existiert -> Abgleich
-    # wenn kein password existiert -> block überspringen
     if password == rooms.password:
         with engine.begin() as connect:
             connect.execute(sqla.delete(rooms).where(rooms.c.room_name == roomname))
@@ -89,7 +87,7 @@ def check_if_password_is_correct(roomname, password):
     check = sqla.select(rooms.c.password).where(rooms.c.roomname == roomname)
     with engine.begin() as connect:
         result = connect.execute(check).first()
-    if (result == password):
+    if (result is not None and result[0] == password):
         return True
     else: 
         return False
