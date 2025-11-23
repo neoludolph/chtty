@@ -114,3 +114,6 @@ async def delete_all_tables_content_():
 async def delete_db_():
     result = delete_db(db_path)
     return result
+
+@app.get("/get_checks")
+async def get_checks():
