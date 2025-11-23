@@ -91,7 +91,7 @@ button:hover {
 .menu-container input {
     margin: 10px;
     border: 1px solid black;
-    padding: 8px;
+    padding: 10px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -191,8 +191,12 @@ input::placeholder {
     padding-top: 20px;
 }
 
+#message-area p {
+
+}
+
 #input-area {
-    padding: 20px;
+    padding: 40px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -207,4 +211,5 @@ input::placeholder {
 #input-area input {
     border: 1px solid black;
     border-radius: 10px;
+    padding-left: 10px;
 }
