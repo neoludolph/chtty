@@ -99,11 +99,18 @@ window.addEventListener("DOMContentLoaded", () => {
             const chatMessage = document.createElement("input");
             chatMessage.type = "text";
             chatMessage.placeholder = "Your message...";
-            chatMessage.classList.add("chat-input")
+            chatMessage.classList.add("chat-input");
 
             const sendMessageButton = document.createElement("button");
             sendMessageButton.type = "button";
             sendMessageButton.textContent = "Send";
+
+            chatMessage.addEventListener("keydown", function (event) {
+                if (event.key == "Enter") {
+                    event.preventDefault();
+                    sendMessageButton.click();
+                }
+            });
 
             const messageArea = document.getElementById("message-area");
             const inputArea = document.getElementById("input-area");
