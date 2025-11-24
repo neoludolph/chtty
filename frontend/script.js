@@ -189,13 +189,17 @@ window.addEventListener("DOMContentLoaded", () => {
                 const p = document.createElement("p");
                 const eventData = JSON.parse(event.data);
                 if (eventData.type === "join") {
-                    const username = eventData.user_name;
+                    const username = eventData.username;
                     p.textContent = `${username} entered the chat!`;
                     messageArea.append(p);
                 } else if (eventData.type === "chat_message") {
                     const username = eventData.username;
                     const chatMessage = eventData.chat_message;
                     p.textContent = `${username}: ${chatMessage}`;
+                    messageArea.append(p);
+                } else if (eventData.type === "leave") {
+                    const username = eventData.username;
+                    p.textContent = `${username} left the chat!`;
                     messageArea.append(p);
                 }
             };

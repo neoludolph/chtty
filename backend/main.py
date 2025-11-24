@@ -3,7 +3,13 @@ from fastapi import WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import HTTPException
 from contextlib import asynccontextmanager
-from backend.models.room_models import RoomData, JoinRoomData, RoomDataResponse , ChatMessage, CheckResult
+from backend.models.room_models import (
+    RoomData, 
+    JoinRoomData, 
+    RoomDataResponse , 
+    ChatMessage, 
+    CheckResult, 
+)
 from backend.database.database import (
     create_db, 
     dispose_db, 
@@ -58,6 +64,13 @@ async def chat(websocket: WebSocket):
             if (join_data_pydantic.roomname not in rooms):
                 rooms[join_data_pydantic.roomname] = set()
             rooms[join_data_pydantic.roomname].add(websocket)
+            for client in rooms[join_data_pydantic.roomname]:
+                if (client is websocket):
+                    continue
+                await client.send_json({
+                    "type": "join",
+                    "username": join_data_pydantic.username
+                })
             try:
                 while True:
                     received_message = await websocket.receive_text()
@@ -67,6 +80,13 @@ async def chat(websocket: WebSocket):
                         await client.send_text(received_message)
             except WebSocketDisconnect:
                 rooms[join_data_pydantic.roomname].discard(websocket)
+                for client in rooms[join_data_pydantic.roomname]:
+                    if (client is websocket):
+                        continue
+                    await client.send_json({
+                        "type": "leave",
+                        "username": join_data_pydantic.username
+                    })
             if not rooms[join_data_pydantic.roomname]:
                 del rooms[join_data_pydantic.roomname]
         else:
