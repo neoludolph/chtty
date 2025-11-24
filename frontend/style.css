@@ -156,6 +156,10 @@ input::placeholder {
     align-self: center;
 }
 
+#message:empty {
+    display: none;
+}
+
 #room-id {
     margin-top: 20px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
