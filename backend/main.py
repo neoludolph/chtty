@@ -90,17 +90,17 @@ async def delete_room_(room_data: RoomData):
     result = delete_room(room_data.roomname, room_data.password)
     return result
 
-@app.delete("/delete_rooms_table")
+@app.delete("/delete_rooms_table_content")
 async def delete_rooms_table_content_():
     result = delete_rooms_table_content()
     return result
 
-@app.delete("/delete_users_table")
+@app.delete("/delete_users_table_content")
 async def delete_users_table_content_():
     result = delete_users_table_content()
     return result
 
-@app.delete("/delete_messages_table")
+@app.delete("/delete_messages_table_content")
 async def delete_messages_table_content_():
     result = delete_messages_table_content()
     return result

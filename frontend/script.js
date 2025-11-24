@@ -59,6 +59,11 @@ window.addEventListener("DOMContentLoaded", () => {
         .catch(error => console.error('Error: ', error));
     });
 
+    createButton.addEventListener("click", (event) => {
+        roomNameCreate.value = "";
+        passwordCreate.value = "";
+    })
+
     // Deletes a room
     deleteButton.addEventListener("click", (event) => {
         event.preventDefault();
@@ -79,6 +84,11 @@ window.addEventListener("DOMContentLoaded", () => {
         })
         .catch(error => console.error('Error: ', error));
     });
+
+    deleteButton.addEventListener("click", (event) => {
+        roomNameDelete.value = "";
+        passwordDelete.value = "";
+    })
 
     // Connection and chat
     connectButton.addEventListener("click", (event) => {
@@ -176,10 +186,6 @@ window.addEventListener("DOMContentLoaded", () => {
                     const chatMessage = eventData.chat_message;
                     p.textContent = `${username}: ${chatMessage}`;
                     messageArea.append(p);
-                } else if (eventData.type === "password_error") {
-                    p.appendChild(eventData.error_message)
-                } else if (eventData.type === "room_error") {
-                    p.appendChild(eventData.error_message)
                 }
             };
         };
