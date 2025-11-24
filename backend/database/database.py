@@ -112,3 +112,11 @@ def save_message_in_db(roomname, message, username):
             username=username
         )
         connect.execute(message_query)
+    
+def save_user_in_db(roomname, username):
+    with engine.begin() as connect:
+        user_query = sqla.insert(users).values(
+            username=username,
+            roomname=roomname,
+        )
+        connect.execute(user_query)

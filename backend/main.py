@@ -23,7 +23,8 @@ from backend.database.database import (
     check_if_password_is_correct,
     delete_db,
     db_path,
-    save_message_in_db
+    save_message_in_db,
+    save_user_in_db
 )
 import json
 from typing import Set
@@ -65,6 +66,7 @@ async def chat(websocket: WebSocket):
             if (join_data_pydantic.roomname not in rooms):
                 rooms[join_data_pydantic.roomname] = set()
             rooms[join_data_pydantic.roomname].add(websocket)
+            save_user_in_db(join_data_pydantic.roomname, join_data_pydantic.username)
             for client in rooms[join_data_pydantic.roomname]:
                 if (client is websocket):
                     continue
