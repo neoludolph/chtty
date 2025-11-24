@@ -24,15 +24,17 @@ def create_db():
 def dispose_db():
     engine.dispose()
 
-def create_room(roomname, password):
+def create_db_room(roomname, password):
     with engine.begin() as connect:
         connect.execute(rooms.insert().values(roomname=roomname, password=password))
     message = "Room successfully created!"
     response = RoomDataResponse(response_message=message)
     return response
 
-def delete_room(roomname, password):
-    if password == rooms.password:
+def delete_db_room(roomname, password):
+    with engine.begin() as connect:
+       password_query = connect.execute(sqla.select(rooms.c.password).where(rooms.c.password == password)).first()
+    if password == password_query:
         with engine.begin() as connect:
             connect.execute(sqla.delete(rooms).where(rooms.c.room_name == roomname))
         message = "Room successfully deleted!"
@@ -74,7 +76,7 @@ def delete_db(db_path):
         return "Database does not exist!"
 
 # db checking functions
-def check_if_room_exists(roomname):
+def check_if_db_room_exists(roomname):
     check = sqla.select(rooms.c.roomname).where(rooms.c.roomname == roomname)
     with engine.begin() as connect:
         result = connect.execute(check).first()

@@ -13,13 +13,13 @@ from backend.models.room_models import (
 from backend.database.database import (
     create_db, 
     dispose_db, 
-    create_room, 
-    delete_room,
+    create_db_room, 
+    delete_db_room,
     delete_rooms_table_content, 
     delete_users_table_content, 
     delete_messages_table_content, 
     delete_all_tables_content,
-    check_if_room_exists,
+    check_if_db_room_exists,
     check_if_password_is_correct,
     delete_db,
     db_path
@@ -57,7 +57,7 @@ async def chat(websocket: WebSocket):
     await websocket.accept()
     join_data = await websocket.receive_text()
     join_data_pydantic = JoinRoomData.model_validate_json(join_data)
-    room_check = check_if_room_exists(join_data_pydantic.roomname)
+    room_check = check_if_db_room_exists(join_data_pydantic.roomname)
     if (room_check):
         password_check = check_if_password_is_correct(join_data_pydantic.roomname, join_data_pydantic.password)
         if (password_check is True):
@@ -92,15 +92,15 @@ async def chat(websocket: WebSocket):
 
 @app.post("/create-room", response_model=RoomDataResponse)
 async def create_room_(room_data: RoomData):
-    if (check_if_room_exists(room_data.roomname)):
+    if (check_if_db_room_exists(room_data.roomname)):
         raise HTTPException(status_code=400, detail="Room already exists!")
     rooms[room_data.roomname] = set()
-    result = create_room(room_data.roomname, room_data.password)
+    result = create_db_room(room_data.roomname, room_data.password)
     return result
 
 @app.delete("/delete-room", response_model=RoomDataResponse)
 async def delete_room_(room_data: RoomData):
-    result = delete_room(room_data.roomname, room_data.password)
+    result = delete_db_room(room_data.roomname, room_data.password)
     return result
 
 @app.delete("/delete_rooms_table_content")
@@ -130,7 +130,7 @@ async def delete_db_():
 
 @app.post("/get_checks", response_model=CheckResult)
 async def get_checks(room_data: RoomData):
-    check_room = check_if_room_exists(room_data.roomname)
+    check_room = check_if_db_room_exists(room_data.roomname)
     check_password = check_if_password_is_correct(room_data.roomname, room_data.password)
     if (check_room is True and check_password is True):
         response = CheckResult(result=True)
