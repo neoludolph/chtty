@@ -89,18 +89,6 @@ async def chat(websocket: WebSocket):
                     })
             if not rooms[join_data_pydantic.roomname]:
                 del rooms[join_data_pydantic.roomname]
-        else:
-            password_error_data = {
-                "type": "password_error",
-                "error_message": "Wrong password! Please try again"
-            }
-            await websocket.send_json(password_error_data)
-    else:
-        room_error_data = {
-            "type": "room_error",
-            "error_message": "This room does not exist!"
-        }
-        await websocket.send_json(room_error_data)
 
 @app.post("/create-room", response_model=RoomDataResponse)
 async def create_room_(room_data: RoomData):
