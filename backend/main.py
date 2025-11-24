@@ -82,7 +82,7 @@ async def chat(websocket: WebSocket):
                         if (client is websocket):
                             continue
                         await client.send_text(received_message)
-                        save_message_in_db(join_data_pydantic.roomname, received_message_parsed.chat_message, received_message_parsed.username)
+                    save_message_in_db(join_data_pydantic.roomname, received_message_parsed.chat_message, received_message_parsed.username)
             except WebSocketDisconnect:
                 rooms[join_data_pydantic.roomname].discard(websocket)
                 for client in rooms[join_data_pydantic.roomname]:
