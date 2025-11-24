@@ -7,8 +7,8 @@ from backend.models.room_models import (
     RoomData, 
     JoinRoomData, 
     RoomDataResponse , 
-    ChatMessage, 
-    CheckResult, 
+    CheckResult,
+    ChatMessage
 )
 from backend.database.database import (
     create_db, 
@@ -22,7 +22,8 @@ from backend.database.database import (
     check_if_db_room_exists,
     check_if_password_is_correct,
     delete_db,
-    db_path
+    db_path,
+    save_message_in_db
 )
 import json
 from typing import Set
@@ -74,10 +75,12 @@ async def chat(websocket: WebSocket):
             try:
                 while True:
                     received_message = await websocket.receive_text()
+                    received_message_parsed = ChatMessage.model_validate_json(received_message)
                     for client in rooms[join_data_pydantic.roomname]:
                         if (client is websocket):
                             continue
                         await client.send_text(received_message)
+                        save_message_in_db(join_data_pydantic.roomname, received_message_parsed.chat_message, received_message_parsed.username)
             except WebSocketDisconnect:
                 rooms[join_data_pydantic.roomname].discard(websocket)
                 for client in rooms[join_data_pydantic.roomname]:
@@ -99,7 +102,7 @@ async def create_room_(room_data: RoomData):
     return result
 
 @app.delete("/delete-room", response_model=RoomDataResponse)
-async def delete_room_(room_data: RoomData):
+async def delete_db_room_(room_data: RoomData):
     result = delete_db_room(room_data.roomname, room_data.password)
     return result
 

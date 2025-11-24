@@ -101,3 +101,14 @@ def check_if_password_is_correct(roomname, password):
         return True
     else: 
         return False
+    
+def save_message_in_db(roomname, message, username):
+    message_id = str(uuid.uuid4())
+    with engine.begin() as connect:
+        message_query = sqla.insert(messages).values(
+            message_id=message_id,
+            message_content=message,
+            roomname=roomname,
+            username=username
+        )
+        connect.execute(message_query)
