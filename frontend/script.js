@@ -54,7 +54,7 @@ window.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => response.json())
         .then(data => {
-            document.getElementById("message").textContent = data.message;
+            document.getElementById("message").textContent = data.response_message;
         })
         .catch(error => console.error('Error: ', error));
     });
