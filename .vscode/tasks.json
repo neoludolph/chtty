@@ -59,6 +59,24 @@
       "problemMatcher": [],
       "label": "Run Frontend",
       "detail": "vite"
+    },
+    {
+      "label": "Run Full Stack",
+      "type": "shell",
+      "dependsOn": [
+        "Run FastAPI",
+        "Run Frontend"
+      ],
+      "dependsOrder": "parallel",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
     }
   ]
 }
