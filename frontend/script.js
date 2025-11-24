@@ -84,13 +84,13 @@ window.addEventListener("DOMContentLoaded", () => {
     connectButton.addEventListener("click", (event) => {
         event.preventDefault();
 
-        const fillInAllFieldsDemandDiv = document.getElementById("fill-all-fields-demand");
+        const errorMessageDiv = document.getElementById("error-message");
         const p = document.createElement("p");
 
         if (roomNameJoin.value == "" || passwordJoin.value == "" || usernameJoin.value == "") {
             p.textContent = "Please fill in all fields!";
-            fillInAllFieldsDemandDiv.textContent = "";
-            fillInAllFieldsDemandDiv.append(p); 
+            errorMessageDiv.textContent = "";
+            errorMessageDiv.append(p); 
             return;
         }
 
@@ -106,9 +106,17 @@ window.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => response.json())
         .then(data => {
-            document.getElementById("message").textContent = data.message;
-        })
-        .catch(error => console.error('Error: ', error));
+            const checkResult = {
+                bool: data.result,
+                errorMessage: data.error_message
+            };
+
+            if (checkResult.bool == false) {
+            p.textContent = checkResult.errorMessage;
+            errorMessageDiv.textContent = "";
+            errorMessageDiv.append(p); 
+            return;
+        }
 
         menuContainer.style.display = "none";
 
@@ -175,5 +183,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 }
             };
         };
+        })
+        .catch(error => console.error('Error: ', error));
     });
 });
