@@ -52,9 +52,11 @@ async def chat(websocket: WebSocket):
     join_data = await websocket.receive_text()
     join_data_pydantic = JoinRoomData.model_validate_json(join_data)
     room_check = check_if_room_exists(join_data_pydantic.roomname)
-    if (room_check is True):
+    if (room_check):
         password_check = check_if_password_is_correct(join_data_pydantic.roomname, join_data_pydantic.password)
         if (password_check is True):
+            if (join_data_pydantic.roomname not in rooms):
+                rooms[join_data_pydantic.roomname] = set()
             rooms[join_data_pydantic.roomname].add(websocket)
             try:
                 while True:
