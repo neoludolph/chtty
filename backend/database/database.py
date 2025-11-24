@@ -33,10 +33,10 @@ def create_db_room(roomname, password):
 
 def delete_db_room(roomname, password):
     with engine.begin() as connect:
-       password_query = connect.execute(sqla.select(rooms.c.password).where(rooms.c.password == password)).first()
-    if password == password_query:
+       password_query = connect.execute(sqla.select(rooms.c.password).where(rooms.c.roomname == roomname)).first()
+    if password == password_query[0]:
         with engine.begin() as connect:
-            connect.execute(sqla.delete(rooms).where(rooms.c.room_name == roomname))
+            connect.execute(sqla.delete(rooms).where(rooms.c.roomname == roomname))
         message = "Room successfully deleted!"
         response = RoomDataResponse(response_message=message)
         return response
