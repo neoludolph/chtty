@@ -34,10 +34,18 @@ def create_db_room(roomname, password):
 def delete_db_room(roomname, password):
     with engine.begin() as connect:
        password_query = connect.execute(sqla.select(rooms.c.password).where(rooms.c.roomname == roomname)).first()
-    if password == password_query[0]:
+    if (password_query is None):
+        message = "Room does not exist!"
+        response = RoomDataResponse(response_message=message)
+        return response
+    elif (password == password_query[0]):
         with engine.begin() as connect:
             connect.execute(sqla.delete(rooms).where(rooms.c.roomname == roomname))
         message = "Room successfully deleted!"
+        response = RoomDataResponse(response_message=message)
+        return response
+    else:
+        message = "The entered password is wrong!"
         response = RoomDataResponse(response_message=message)
         return response
 

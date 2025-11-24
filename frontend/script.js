@@ -42,7 +42,7 @@ window.addEventListener("DOMContentLoaded", () => {
     createButton.addEventListener("click", (event) => {
         event.preventDefault();
 
-        const MessageDiv = document.getElementById("message");
+        const MessageDiv = document.getElementById("create-message");
         const p = document.createElement("p");
 
         if (roomNameCreate.value === "" || passwordCreate.value === "") {
@@ -64,7 +64,7 @@ window.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => response.json())
         .then(data => {
-            document.getElementById("message").textContent = data.response_message;
+            document.getElementById("create-message").textContent = data.response_message;
         })
         .catch(error => console.error('Error: ', error));
     });
@@ -79,7 +79,7 @@ window.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
 
         fetch("http://localhost:8000/delete-room", {
-            method: 'POST',
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -90,7 +90,7 @@ window.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => response.json())
         .then(data => {
-            document.getElementById("message").textContent = data.message;
+            document.getElementById("delete-message").textContent = data.response_message;
         })
         .catch(error => console.error('Error: ', error));
     });
