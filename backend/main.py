@@ -1,6 +1,7 @@
 from fastapi import FastAPI, WebSocket
 from fastapi import WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import HTTPException
 from contextlib import asynccontextmanager
 from backend.models.room_models import RoomData, JoinRoomData, RoomDataResponse , ChatMessage, CheckResult
 from backend.database.database import (
@@ -81,6 +82,8 @@ async def chat(websocket: WebSocket):
 
 @app.post("/create-room", response_model=RoomDataResponse)
 async def create_room_(room_data: RoomData):
+    if (check_if_room_exists(room_data.roomname)):
+        raise HTTPException(status_code=400, detail="Room already exists!")
     rooms[room_data.roomname] = set()
     result = create_room(room_data.roomname, room_data.password)
     return result

@@ -18,21 +18,21 @@ window.addEventListener("DOMContentLoaded", () => {
     const deleteButton = document.getElementById("delete-button");
 
     passwordCreate.addEventListener("keydown", function (event) {
-        if (event.key == "Enter") {
+        if (event.key === "Enter") {
             event.preventDefault();
             createButton.click();
         }
     });
 
     usernameJoin.addEventListener("keydown", function (event) {
-        if (event.key == "Enter") {
+        if (event.key === "Enter") {
             event.preventDefault();
             connectButton.click();
         }
     });
 
     passwordDelete.addEventListener("keydown", function (event) {
-        if (event.key == "Enter") {
+        if (event.key === "Enter") {
             event.preventDefault();
             deleteButton.click();
         }
@@ -41,6 +41,16 @@ window.addEventListener("DOMContentLoaded", () => {
     // Creates a room
     createButton.addEventListener("click", (event) => {
         event.preventDefault();
+
+        const MessageDiv = document.getElementById("message");
+        const p = document.createElement("p");
+
+        if (roomNameCreate.value === "" || passwordCreate.value === "") {
+            p.textContent = "Please fill in all fields!";
+            MessageDiv.textContent = "";
+            MessageDiv.append(p); 
+            return;
+        }
 
         fetch('http://localhost:8000/create-room', {
             method: 'POST',
@@ -55,6 +65,7 @@ window.addEventListener("DOMContentLoaded", () => {
         .then(response => response.json())
         .then(data => {
             document.getElementById("message").textContent = data.response_message;
+            document.getElementById("message").textContent = data.detail;
         })
         .catch(error => console.error('Error: ', error));
     });
@@ -97,7 +108,7 @@ window.addEventListener("DOMContentLoaded", () => {
         const errorMessageDiv = document.getElementById("error-message");
         const p = document.createElement("p");
 
-        if (roomNameJoin.value == "" || passwordJoin.value == "" || usernameJoin.value == "") {
+        if (roomNameJoin.value === "" || passwordJoin.value === "" || usernameJoin.value === "") {
             p.textContent = "Please fill in all fields!";
             errorMessageDiv.textContent = "";
             errorMessageDiv.append(p); 
@@ -121,7 +132,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 errorMessage: data.error_message
             };
 
-            if (checkResult.bool == false) {
+            if (checkResult.bool === false) {
             p.textContent = checkResult.errorMessage;
             errorMessageDiv.textContent = "";
             errorMessageDiv.append(p); 
@@ -150,7 +161,7 @@ window.addEventListener("DOMContentLoaded", () => {
             sendMessageButton.textContent = "Send";
 
             chatMessage.addEventListener("keydown", function (event) {
-                if (event.key == "Enter") {
+                if (event.key === "Enter") {
                     event.preventDefault();
                     sendMessageButton.click();
                 }
