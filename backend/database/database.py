@@ -115,12 +115,11 @@ def save_message_in_db(roomname, message, username):
     
 def save_user_in_db(roomname, username):
     with engine.begin() as connect:
+        delete_user_from_users = sqla.delete(users).where(users.c.username == username)
+        connect.execute(delete_user_from_users)
         user_query = sqla.insert(users).values(
             username=username,
             roomname=roomname,
         )
-        user_check = sqla.select(users.c.username).where(users.c.roomname == roomname).first()
         connect.execute(user_query)
-        connect.execute(user_check)
-    if (user_check[0] is username):
-        
+    
