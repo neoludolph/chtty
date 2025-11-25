@@ -74,8 +74,7 @@ async def chat(websocket: WebSocket):
             result = get_messages_from_db(join_data_pydantic.roomname)
             chat_history = [dict(rows._mapping) for rows in result]
             for row_dict in chat_history:
-                row_dict["timestamp"] = str(row_dict("timestamp"))
-                row_dict["message_id"] = str(row_dict("message_id"))
+                row_dict["timestamp"] = str(row_dict["timestamp"])
             await websocket.send_json({
                 "type": "chat_history_type",
                 "chat_history": chat_history
