@@ -119,4 +119,8 @@ def save_user_in_db(roomname, username):
             username=username,
             roomname=roomname,
         )
+        user_check = sqla.select(users.c.username).where(users.c.roomname == roomname).first()
         connect.execute(user_query)
+        connect.execute(user_check)
+    if (user_check[0] is username):
+        
