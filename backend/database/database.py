@@ -123,3 +123,8 @@ def save_user_in_db(roomname, username):
         )
         connect.execute(user_query)
     
+    
+def delete_user_from_db(username):
+    with engine.begin() as connect:
+        delete_user_from_users = sqla.delete(users).where(users.c.username == username)
+        connect.execute(delete_user_from_users)

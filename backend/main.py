@@ -24,7 +24,8 @@ from backend.database.database import (
     delete_db,
     db_path,
     save_message_in_db,
-    save_user_in_db
+    save_user_in_db,
+    delete_user_from_db
 )
 import json
 from typing import Set
@@ -85,6 +86,7 @@ async def chat(websocket: WebSocket):
                     save_message_in_db(join_data_pydantic.roomname, received_message_parsed.chat_message, received_message_parsed.username)
             except WebSocketDisconnect:
                 rooms[join_data_pydantic.roomname].discard(websocket)
+                delete_user_from_db(join_data_pydantic.username)
                 for client in rooms[join_data_pydantic.roomname]:
                     if (client is websocket):
                         continue
