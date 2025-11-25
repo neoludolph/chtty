@@ -22,3 +22,8 @@ class RoomDataResponse(BaseModel):
 class CheckResult(BaseModel):
     result: bool
     error_message: str | None = None
+
+class LoginData(BaseModel):
+    username: str
+    roomname: str
+    password: str

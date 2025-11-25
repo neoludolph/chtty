@@ -8,7 +8,8 @@ from backend.models.room_models import (
     JoinRoomData, 
     RoomDataResponse , 
     CheckResult,
-    ChatMessage
+    ChatMessage,
+    LoginData
 )
 from backend.database.database import (
     create_db, 
@@ -25,7 +26,9 @@ from backend.database.database import (
     db_path,
     save_message_in_db,
     save_user_in_db,
-    delete_user_from_db
+    delete_user_from_db,
+    check_if_user_exists_in_db,
+    get_messages_from_db
 )
 import json
 from typing import Set
@@ -68,6 +71,15 @@ async def chat(websocket: WebSocket):
                 rooms[join_data_pydantic.roomname] = set()
             rooms[join_data_pydantic.roomname].add(websocket)
             save_user_in_db(join_data_pydantic.roomname, join_data_pydantic.username)
+            result = get_messages_from_db(join_data_pydantic.roomname)
+            chat_history = [dict(rows._mapping) for rows in result]
+            for row_dict in chat_history:
+                row_dict["timestamp"] = str(row_dict("timestamp"))
+                row_dict["message_id"] = str(row_dict("message_id"))
+            await websocket.send_json({
+                "type": "chat_history_type",
+                "chat_history": chat_history
+            })
             for client in rooms[join_data_pydantic.roomname]:
                 if (client is websocket):
                     continue
@@ -96,6 +108,28 @@ async def chat(websocket: WebSocket):
                     })
             if not rooms[join_data_pydantic.roomname]:
                 del rooms[join_data_pydantic.roomname]
+
+@app.post("/get_checks", response_model=CheckResult)
+async def get_checks(room_data: LoginData):
+    check_room = check_if_db_room_exists(room_data.roomname)
+    check_password = check_if_password_is_correct(room_data.roomname, room_data.password)
+    check_user = check_if_user_exists_in_db(room_data.username)
+    if (check_room is True and check_password is True):
+        if (check_user):
+            username_already_taken = "Your entered username is already taken by someone else!"
+            response = CheckResult(result=False, error_message=username_already_taken)
+            return response
+        else:
+            response = CheckResult(result=True)
+            return response
+    elif (check_room is True and check_password is False):
+        wrong_password = "The entered password is wrong!"
+        response = CheckResult(result=False, error_message=wrong_password)
+        return response
+    else:
+        no_room = "Room does not exist!"
+        response = CheckResult(result=False, error_message=no_room)
+        return response
 
 @app.post("/create-room", response_model=RoomDataResponse)
 async def create_room_(room_data: RoomData):
@@ -134,19 +168,3 @@ async def delete_all_tables_content_():
 async def delete_db_():
     result = delete_db(db_path)
     return result
-
-@app.post("/get_checks", response_model=CheckResult)
-async def get_checks(room_data: RoomData):
-    check_room = check_if_db_room_exists(room_data.roomname)
-    check_password = check_if_password_is_correct(room_data.roomname, room_data.password)
-    if (check_room is True and check_password is True):
-        response = CheckResult(result=True)
-        return response
-    elif (check_room is True and check_password is False):
-        wrong_password = "The entered password is wrong!"
-        response = CheckResult(result=False, error_message=wrong_password)
-        return response
-    else:
-        no_room = "Room does not exist!"
-        response = CheckResult(result=False, error_message=no_room)
-        return response

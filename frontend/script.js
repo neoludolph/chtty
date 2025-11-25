@@ -120,6 +120,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                username: usernameJoin.value,
                 roomname: roomNameJoin.value,
                 password: passwordJoin.value,
             })

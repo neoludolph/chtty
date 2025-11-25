@@ -117,14 +117,28 @@ def save_user_in_db(roomname, username):
     with engine.begin() as connect:
         delete_user_from_users = sqla.delete(users).where(users.c.username == username)
         connect.execute(delete_user_from_users)
-        user_query = sqla.insert(users).values(
+        user_insertion = sqla.insert(users).values(
             username=username,
             roomname=roomname,
         )
-        connect.execute(user_query)
-    
+        connect.execute(user_insertion)
     
 def delete_user_from_db(username):
     with engine.begin() as connect:
         delete_user_from_users = sqla.delete(users).where(users.c.username == username)
         connect.execute(delete_user_from_users)
+
+def check_if_user_exists_in_db(username):
+    user_check = sqla.select(users.c.username).where(users.c.username == username)
+    with engine.begin() as connect:
+        result = connect.execute(user_check).first()
+    if (result is None):
+        return False
+    else:
+        return True 
+    
+def get_messages_from_db(roomname):
+    with engine.begin() as connect:
+        get_messages = sqla.select(messages.c.message_content, messages.c.username, messages.c.timestamp).where(messages.c.roomname == roomname).order_by(messages.c.timestamp)
+        result = connect.execute(get_messages).fetchall()
+    return result
