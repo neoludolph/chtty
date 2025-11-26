@@ -201,6 +201,16 @@ window.addEventListener("DOMContentLoaded", () => {
                     const username = eventData.username;
                     p.textContent = `${username} left the chat!`;
                     messageArea.append(p);
+                } else if (eventData.type === "chat_history_type") {
+                    const array = eventData.chat_history;
+                    array.forEach(element => {
+                        const messageP = document.createElement("p");
+                        const username = element.username;
+                        const chatMessage = element.chat_message;   
+                        const timestamp = element.timestamp;  
+                        messageP.textContent = `${timestamp} ${username}: ${chatMessage}`;
+                        messageArea.append(messageP);
+                    });
                 }
             };
         };
