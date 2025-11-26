@@ -17,6 +17,14 @@ window.addEventListener("DOMContentLoaded", () => {
     const connectButton = document.getElementById("connect-button");
     const deleteButton = document.getElementById("delete-button");
 
+    function appendMessage(messageArea, username, chatMessage, timestamp) {
+        const date = timestamp ? new Date(timestamp) : new Date();
+        const timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const p = document.createElement("p");
+        p.textContent = `${timeString} ${username}: ${chatMessage}`;
+        messageArea.append(p);
+    }
+
     passwordCreate.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
             event.preventDefault();
@@ -179,39 +187,30 @@ window.addEventListener("DOMContentLoaded", () => {
                     chat_message: chatMessage.value
                 }));
 
-                const p = document.createElement("p");
-                p.textContent = `You: ${chatMessage.value}`;
-                messageArea.append(p);
+                appendMessage(messageArea, "You", chatMessage.value);
                 chatMessage.value = "";
             });
 
             ws.onmessage = (event) => {
-                const p = document.createElement("p");
                 const eventData = JSON.parse(event.data);
                 if (eventData.type === "join") {
+                    const p = document.createElement("p");
                     const username = eventData.username;
                     p.textContent = `${username} entered the chat!`;
                     messageArea.append(p);
                 } else if (eventData.type === "chat_message") {
                     const username = eventData.username;
                     const chatMessage = eventData.chat_message;
-                    p.textContent = `${username}: ${chatMessage}`;
-                    messageArea.append(p);
+                    appendMessage(messageArea, username, chatMessage, eventData.timestamp);
                 } else if (eventData.type === "leave") {
+                    const p = document.createElement("p");
                     const username = eventData.username;
                     p.textContent = `${username} left the chat!`;
                     messageArea.append(p);
                 } else if (eventData.type === "chat_history_type") {
                     const array = eventData.chat_history;
                     array.forEach(element => {
-                        const date = new Date(element.timestamp);
-                        const timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                        const messageP = document.createElement("p");
-                        const username = element.username;
-                        const chatMessage = element.chat_message;   
-                        const timestamp = element.timestamp;  
-                        messageP.textContent = `${timeString} ${username}: ${chatMessage}`;
-                        messageArea.append(messageP);
+                        appendMessage(messageArea, element.username, element.chat_message, element.timestamp);
                     });
                 }
             };
