@@ -107,7 +107,7 @@ def save_message_in_db(roomname, message, username):
     with engine.begin() as connect:
         message_query = sqla.insert(messages).values(
             message_id=message_id,
-            message_content=message,
+            chat_message=message,
             roomname=roomname,
             username=username
         )
@@ -139,6 +139,6 @@ def check_if_user_exists_in_db(username):
     
 def get_messages_from_db(roomname):
     with engine.begin() as connect:
-        get_messages = sqla.select(messages.c.message_content, messages.c.username, messages.c.timestamp).where(messages.c.roomname == roomname).order_by(messages.c.timestamp)
+        get_messages = sqla.select(messages.c.chat_message, messages.c.username, messages.c.timestamp).where(messages.c.roomname == roomname).order_by(messages.c.timestamp)
         result = connect.execute(get_messages).fetchall()
     return result
