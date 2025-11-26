@@ -220,14 +220,57 @@ input::placeholder {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 20px;
+    padding: 20px 0;
+    gap: 10px;
 }
 
 #message-area p {
-    margin-top: 1px;
+    margin: 0;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 15px;
-    font-weight: 800;
+    font-weight: 600;
+}
+
+.message-row {
+    width: min(600px, 80%);
+    display: flex;
+    margin: 0 auto;
+}
+
+.message-row.self {
+    justify-content: flex-end;
+}
+
+.message-row.other {
+    justify-content: flex-start;
+}
+
+.message-row.system {
+    justify-content: center;
+}
+
+.chat-message {
+    max-width: 100%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    border: 1px solid #ddd;
+    background-color: #f3f3f3;
+}
+
+.chat-message.self {
+    background-color: #dceefc;
+    border-color: #b5d4f4;
+}
+
+.chat-message.other {
+    align-self: flex-start;
+}
+
+.system-message {
+    background-color: transparent;
+    border: none;
+    font-weight: 600;
+    color: #555;
 }
 
 #input-area {

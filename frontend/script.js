@@ -21,13 +21,20 @@ window.addEventListener("DOMContentLoaded", () => {
     const deleteButton = document.getElementById("delete-button");
 
     let currentWebSocket = null;
+    let currentUsername = null;
 
     function appendMessage(messageArea, username, chatMessage, timestamp) {
         const date = timestamp ? new Date(timestamp) : new Date();
         const timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const p = document.createElement("p");
+        const isSelf = username === "You" || username === currentUsername;
+        p.classList.add("chat-message");
+        p.classList.add(isSelf ? "self" : "other");
         p.textContent = `${timeString} ${username}: ${chatMessage}`;
-        messageArea.append(p);
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("message-row", isSelf ? "self" : "other");
+        wrapper.append(p);
+        messageArea.append(wrapper);
     }
 
     function saveSession(roomname, password, username) {
@@ -50,6 +57,7 @@ window.addEventListener("DOMContentLoaded", () => {
     function showMenu() {
         menuContainer.style.display = "flex";
         chatHeader.style.display = "none";
+        currentUsername = null;
         document.getElementById("message-area").innerHTML = "";
         document.getElementById("input-area").innerHTML = "";
     }
@@ -63,6 +71,7 @@ window.addEventListener("DOMContentLoaded", () => {
     function connectToRoom(roomname, password, username) {
         const ws = new WebSocket(`ws://localhost:8000/ws`);
         currentWebSocket = ws;
+        currentUsername = username;
 
         ws.onopen = () => {
             ws.send(JSON.stringify({
@@ -113,7 +122,11 @@ window.addEventListener("DOMContentLoaded", () => {
                     const p = document.createElement("p");
                     const joinedUsername = eventData.username;
                     p.textContent = `${joinedUsername} entered the chat!`;
-                    messageArea.append(p);
+                    const wrapper = document.createElement("div");
+                    wrapper.classList.add("message-row", "system");
+                    p.classList.add("system-message");
+                    wrapper.append(p);
+                    messageArea.append(wrapper);
                 } else if (eventData.type === "chat_message") {
                     const msgUsername = eventData.username;
                     const msgContent = eventData.chat_message;
@@ -122,7 +135,11 @@ window.addEventListener("DOMContentLoaded", () => {
                     const p = document.createElement("p");
                     const leftUsername = eventData.username;
                     p.textContent = `${leftUsername} left the chat!`;
-                    messageArea.append(p);
+                    const wrapper = document.createElement("div");
+                    wrapper.classList.add("message-row", "system");
+                    p.classList.add("system-message");
+                    wrapper.append(p);
+                    messageArea.append(wrapper);
                 } else if (eventData.type === "chat_history_type") {
                     const array = eventData.chat_history;
                     array.forEach(element => {
