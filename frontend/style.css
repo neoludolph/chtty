@@ -188,7 +188,8 @@ input::placeholder {
 #chat-header {
     width: 100%;
     padding: 15px 20px;
-    background-color: rgb(73, 73, 73);
+    background-color: white;
+    border-bottom: 1px solid #ccc;
     display: flex;
     align-items: center;
     gap: 20px;
@@ -196,16 +197,17 @@ input::placeholder {
 
 #chat-header #back-button {
     padding: 8px 16px;
-    background-color: rgb(100, 100, 100);
-    border: 1px solid white;
+    background-color: rgb(240, 240, 240);
+    color: #222;
+    border: 1px solid #999;
 }
 
 #chat-header #back-button:hover {
-    background-color: rgb(120, 120, 120);
+    background-color: rgb(225, 225, 225);
 }
 
 #room-title {
-    color: white;
+    color: #222;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 18px;
     font-weight: 600;
