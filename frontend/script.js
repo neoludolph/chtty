@@ -204,11 +204,13 @@ window.addEventListener("DOMContentLoaded", () => {
                 } else if (eventData.type === "chat_history_type") {
                     const array = eventData.chat_history;
                     array.forEach(element => {
+                        const date = new Date(element.timestamp);
+                        const timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                         const messageP = document.createElement("p");
                         const username = element.username;
                         const chatMessage = element.chat_message;   
                         const timestamp = element.timestamp;  
-                        messageP.textContent = `${timestamp} ${username}: ${chatMessage}`;
+                        messageP.textContent = `${timeString} ${username}: ${chatMessage}`;
                         messageArea.append(messageP);
                     });
                 }
