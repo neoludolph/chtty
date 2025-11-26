@@ -2,6 +2,9 @@
 
 window.addEventListener("DOMContentLoaded", () => {
     const menuContainer = document.getElementById("menu-container-id");
+    const chatHeader = document.getElementById("chat-header");
+    const backButton = document.getElementById("back-button");
+    const roomTitle = document.getElementById("room-title");
 
     const roomNameCreate = document.getElementById("room-name-create");
     const roomNameJoin = document.getElementById("room-name-join");
@@ -17,12 +20,170 @@ window.addEventListener("DOMContentLoaded", () => {
     const connectButton = document.getElementById("connect-button");
     const deleteButton = document.getElementById("delete-button");
 
+    let currentWebSocket = null;
+
     function appendMessage(messageArea, username, chatMessage, timestamp) {
         const date = timestamp ? new Date(timestamp) : new Date();
         const timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const p = document.createElement("p");
         p.textContent = `${timeString} ${username}: ${chatMessage}`;
         messageArea.append(p);
+    }
+
+    function saveSession(roomname, password, username) {
+        sessionStorage.setItem('chatSession', JSON.stringify({
+            roomname,
+            password,
+            username
+        }));
+    }
+
+    function getSession() {
+        const session = sessionStorage.getItem('chatSession');
+        return session ? JSON.parse(session) : null;
+    }
+
+    function clearSession() {
+        sessionStorage.removeItem('chatSession');
+    }
+
+    function showMenu() {
+        menuContainer.style.display = "flex";
+        chatHeader.style.display = "none";
+        document.getElementById("message-area").innerHTML = "";
+        document.getElementById("input-area").innerHTML = "";
+    }
+
+    function showChat(roomname) {
+        menuContainer.style.display = "none";
+        chatHeader.style.display = "flex";
+        roomTitle.textContent = `Room: ${roomname}`;
+    }
+
+    function connectToRoom(roomname, password, username) {
+        const ws = new WebSocket(`ws://localhost:8000/ws`);
+        currentWebSocket = ws;
+
+        ws.onopen = () => {
+            ws.send(JSON.stringify({
+                type: "join",
+                roomname: roomname,
+                password: password,
+                username: username
+            }));
+
+            showChat(roomname);
+
+            const chatMessage = document.createElement("input");
+            chatMessage.type = "text";
+            chatMessage.placeholder = "Your message...";
+            chatMessage.classList.add("chat-input");
+
+            const sendMessageButton = document.createElement("button");
+            sendMessageButton.type = "button";
+            sendMessageButton.textContent = "Send";
+
+            chatMessage.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    sendMessageButton.click();
+                }
+            });
+
+            const messageArea = document.getElementById("message-area");
+            const inputArea = document.getElementById("input-area");
+
+            inputArea.append(chatMessage, sendMessageButton);
+
+            sendMessageButton.addEventListener("click", () => {
+                if (chatMessage.value.trim() === "") return;
+                ws.send(JSON.stringify({
+                    type: "chat_message",
+                    username: username,
+                    chat_message: chatMessage.value
+                }));
+
+                appendMessage(messageArea, "You", chatMessage.value);
+                chatMessage.value = "";
+            });
+
+            ws.onmessage = (event) => {
+                const eventData = JSON.parse(event.data);
+                if (eventData.type === "join") {
+                    const p = document.createElement("p");
+                    const joinedUsername = eventData.username;
+                    p.textContent = `${joinedUsername} entered the chat!`;
+                    messageArea.append(p);
+                } else if (eventData.type === "chat_message") {
+                    const msgUsername = eventData.username;
+                    const msgContent = eventData.chat_message;
+                    appendMessage(messageArea, msgUsername, msgContent, eventData.timestamp);
+                } else if (eventData.type === "leave") {
+                    const p = document.createElement("p");
+                    const leftUsername = eventData.username;
+                    p.textContent = `${leftUsername} left the chat!`;
+                    messageArea.append(p);
+                } else if (eventData.type === "chat_history_type") {
+                    const array = eventData.chat_history;
+                    array.forEach(element => {
+                        appendMessage(messageArea, element.username, element.chat_message, element.timestamp);
+                    });
+                }
+            };
+
+            ws.onclose = () => {
+                currentWebSocket = null;
+            };
+        };
+
+        ws.onerror = () => {
+            clearSession();
+            showMenu();
+        };
+    }
+
+    // Back button handler
+    backButton.addEventListener("click", () => {
+        if (currentWebSocket) {
+            currentWebSocket.close();
+            currentWebSocket = null;
+        }
+        clearSession();
+        showMenu();
+    });
+
+    // Check for existing session on page load
+    const existingSession = getSession();
+    if (existingSession) {
+        // Verify the session is still valid
+        fetch("http://localhost:8000/get_checks", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: existingSession.username,
+                roomname: existingSession.roomname,
+                password: existingSession.password,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.result === true || data.error_message === "Your entered username is already taken by someone else!") {
+                // Session valid, reconnect
+                connectToRoom(existingSession.roomname, existingSession.password, existingSession.username);
+            } else {
+                // Session invalid, clear and show menu
+                clearSession();
+                showMenu();
+            }
+        })
+        .catch(() => {
+            clearSession();
+            showMenu();
+        });
+    } else {
+        showMenu();
     }
 
     passwordCreate.addEventListener("keydown", function (event) {
@@ -75,12 +236,10 @@ window.addEventListener("DOMContentLoaded", () => {
             document.getElementById("create-message").textContent = data.response_message;
         })
         .catch(error => console.error('Error: ', error));
-    });
 
-    createButton.addEventListener("click", (event) => {
         roomNameCreate.value = "";
         passwordCreate.value = "";
-    })
+    });
 
     // Deletes a room
     deleteButton.addEventListener("click", (event) => {
@@ -101,12 +260,10 @@ window.addEventListener("DOMContentLoaded", () => {
             document.getElementById("delete-message").textContent = data.response_message;
         })
         .catch(error => console.error('Error: ', error));
-    });
 
-    deleteButton.addEventListener("click", (event) => {
         roomNameDelete.value = "";
         passwordDelete.value = "";
-    })
+    });
 
     // Connection and chat
     connectButton.addEventListener("click", (event) => {
@@ -141,80 +298,15 @@ window.addEventListener("DOMContentLoaded", () => {
             };
 
             if (checkResult.bool === false) {
-            p.textContent = checkResult.errorMessage;
-            errorMessageDiv.textContent = "";
-            errorMessageDiv.append(p); 
-            return;
-        }
+                p.textContent = checkResult.errorMessage;
+                errorMessageDiv.textContent = "";
+                errorMessageDiv.append(p); 
+                return;
+            }
 
-        menuContainer.style.display = "none";
-
-        const ws = new WebSocket(`ws://localhost:8000/ws`);
-
-        ws.onopen = () => {
-            ws.send(JSON.stringify({
-                type: "join",
-                roomname: roomNameJoin.value,
-                password: passwordJoin.value,
-                username: usernameJoin.value
-            }));
-
-            const chatMessage = document.createElement("input");
-            chatMessage.type = "text";
-            chatMessage.placeholder = "Your message...";
-            chatMessage.classList.add("chat-input");
-
-            const sendMessageButton = document.createElement("button");
-            sendMessageButton.type = "button";
-            sendMessageButton.textContent = "Send";
-
-            chatMessage.addEventListener("keydown", function (event) {
-                if (event.key === "Enter") {
-                    event.preventDefault();
-                    sendMessageButton.click();
-                }
-            });
-
-            const messageArea = document.getElementById("message-area");
-            const inputArea = document.getElementById("input-area");
-
-            inputArea.append(chatMessage, sendMessageButton);
-
-            sendMessageButton.addEventListener("click", () => {
-                ws.send(JSON.stringify({
-                    type: "chat_message",
-                    username: usernameJoin.value,
-                    chat_message: chatMessage.value
-                }));
-
-                appendMessage(messageArea, "You", chatMessage.value);
-                chatMessage.value = "";
-            });
-
-            ws.onmessage = (event) => {
-                const eventData = JSON.parse(event.data);
-                if (eventData.type === "join") {
-                    const p = document.createElement("p");
-                    const username = eventData.username;
-                    p.textContent = `${username} entered the chat!`;
-                    messageArea.append(p);
-                } else if (eventData.type === "chat_message") {
-                    const username = eventData.username;
-                    const chatMessage = eventData.chat_message;
-                    appendMessage(messageArea, username, chatMessage, eventData.timestamp);
-                } else if (eventData.type === "leave") {
-                    const p = document.createElement("p");
-                    const username = eventData.username;
-                    p.textContent = `${username} left the chat!`;
-                    messageArea.append(p);
-                } else if (eventData.type === "chat_history_type") {
-                    const array = eventData.chat_history;
-                    array.forEach(element => {
-                        appendMessage(messageArea, element.username, element.chat_message, element.timestamp);
-                    });
-                }
-            };
-        };
+            // Save session before connecting
+            saveSession(roomNameJoin.value, passwordJoin.value, usernameJoin.value);
+            connectToRoom(roomNameJoin.value, passwordJoin.value, usernameJoin.value);
         })
         .catch(error => console.error('Error: ', error));
     });

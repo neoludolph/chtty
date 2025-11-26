@@ -185,6 +185,32 @@ input::placeholder {
     align-items: center;
 }
 
+#chat-header {
+    width: 100%;
+    padding: 15px 20px;
+    background-color: rgb(73, 73, 73);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+#chat-header #back-button {
+    padding: 8px 16px;
+    background-color: rgb(100, 100, 100);
+    border: 1px solid white;
+}
+
+#chat-header #back-button:hover {
+    background-color: rgb(120, 120, 120);
+}
+
+#room-title {
+    color: white;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+}
+
 #message-area {
     flex-grow: 1;
     overflow-y: auto;
