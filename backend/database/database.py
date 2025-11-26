@@ -54,6 +54,11 @@ def delete_db_room(roomname, password):
         return response
     elif verify_password(password, password_query[0]):
         with engine.begin() as connect:
+            # Delete all messages belonging to this room
+            connect.execute(sqla.delete(messages).where(messages.c.roomname == roomname))
+            # Delete all users belonging to this room
+            connect.execute(sqla.delete(users).where(users.c.roomname == roomname))
+            # Delete the room itself
             connect.execute(sqla.delete(rooms).where(rooms.c.roomname == roomname))
         message = "Room successfully deleted!"
         response = RoomDataResponse(response_message=message)
