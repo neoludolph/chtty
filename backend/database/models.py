@@ -4,7 +4,7 @@ metadata = db.MetaData()
 
 rooms = db.Table('rooms', metadata,
     db.Column('roomname', db.String(30), primary_key=True),
-    db.Column('password', db.String(50))
+    db.Column('password', db.String(60))  # bcrypt hashes are 60 characters
 ) 
 
 users = db.Table('users', metadata,

@@ -1,3 +1,4 @@
 fastapi[standard]==0.118.0
 pydantic==2.11.9
 SQLAlchemy==2.0.44
+bcrypt==4.2.0

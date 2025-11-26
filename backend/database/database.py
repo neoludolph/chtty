@@ -3,10 +3,23 @@ import sqlalchemy as sqla
 from sqlalchemy.exc import SQLAlchemyError
 from pathlib import Path
 import uuid
+import bcrypt
 from backend.models.room_models import RoomDataResponse
 from backend.database.models import rooms, users, messages, metadata
 import shutil
 import os
+
+
+def hash_password(password: str) -> str:
+    """Hash a password using bcrypt."""
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed.decode('utf-8')
+
+
+def verify_password(password: str, hashed_password: str) -> bool:
+    """Verify a password against a hashed password."""
+    return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 current_file = Path(__file__).parent
 db_path = current_file / 'database.db'
@@ -25,8 +38,9 @@ def dispose_db():
     engine.dispose()
 
 def create_db_room(roomname, password):
+    hashed_pw = hash_password(password)
     with engine.begin() as connect:
-        connect.execute(rooms.insert().values(roomname=roomname, password=password))
+        connect.execute(rooms.insert().values(roomname=roomname, password=hashed_pw))
     message = "Room successfully created!"
     response = RoomDataResponse(response_message=message)
     return response
@@ -38,7 +52,7 @@ def delete_db_room(roomname, password):
         message = "Room does not exist!"
         response = RoomDataResponse(response_message=message)
         return response
-    elif (password == password_query[0]):
+    elif verify_password(password, password_query[0]):
         with engine.begin() as connect:
             connect.execute(sqla.delete(rooms).where(rooms.c.roomname == roomname))
         message = "Room successfully deleted!"
@@ -97,7 +111,7 @@ def check_if_password_is_correct(roomname, password):
     check = sqla.select(rooms.c.password).where(rooms.c.roomname == roomname)
     with engine.begin() as connect:
         result = connect.execute(check).first()
-    if (result is not None and result[0] == password):
+    if result is not None and verify_password(password, result[0]):
         return True
     else: 
         return False
