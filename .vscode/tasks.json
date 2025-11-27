@@ -37,11 +37,14 @@
     {
       "label": "Run FastAPI",
       "type": "shell",
-      "command": "uvicorn",
+      "command": "bash",
       "args": [
-        "backend.main:app",
-        "--reload"
+        "-lc",
+        "cd ${workspaceFolder}/backend && source ${workspaceFolder}/.venv/bin/activate && uvicorn main:app --reload"
       ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "group": {
         "kind": "build",
         "isDefault": true

@@ -4,8 +4,8 @@ from sqlalchemy.exc import SQLAlchemyError
 from pathlib import Path
 import uuid
 import bcrypt
-from backend.models.room_models import RoomDataResponse
-from backend.database.models import rooms, users, messages, metadata
+from models.room_models import RoomDataResponse
+from database.models import rooms, users, messages, metadata
 import shutil
 import os
 

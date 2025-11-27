@@ -3,7 +3,7 @@ from fastapi import WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import HTTPException
 from contextlib import asynccontextmanager
-from backend.models.room_models import (
+from models.room_models import (
     RoomData, 
     JoinRoomData, 
     RoomDataResponse , 
@@ -11,7 +11,7 @@ from backend.models.room_models import (
     ChatMessage,
     LoginData
 )
-from backend.database.database import (
+from database.database import (
     create_db, 
     dispose_db, 
     create_db_room, 
