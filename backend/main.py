@@ -173,6 +173,7 @@ async def delete_db_room_(room_data: RoomData):
         raise HTTPException(status_code=401, detail="The entered password is wrong!")
 
     result = delete_db_room(roomname, password)
+    rooms.pop(roomname, None)
     return result
 
 @app.delete("/delete_rooms_table_content")
