@@ -28,14 +28,24 @@ window.addEventListener("DOMContentLoaded", () => {
     function appendMessage(messageArea, username, chatMessage, timestamp) {
         const date = timestamp ? new Date(timestamp) : new Date();
         const timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        const p = document.createElement("p");
         const isSelf = username === "You" || username === currentUsername;
-        p.classList.add("chat-message");
-        p.classList.add(isSelf ? "self" : "other");
-        p.textContent = `${timeString} ${username}: ${chatMessage}`;
+
+        const messageBubble = document.createElement("div");
+        messageBubble.classList.add("chat-message", isSelf ? "self" : "other");
+
+        const messageText = document.createElement("p");
+        messageText.classList.add("message-text");
+        messageText.textContent = `${username}: ${chatMessage}`;
+
+        const timestampElement = document.createElement("span");
+        timestampElement.classList.add("message-timestamp");
+        timestampElement.textContent = timeString;
+
+        messageBubble.append(messageText, timestampElement);
+
         const wrapper = document.createElement("div");
         wrapper.classList.add("message-row", isSelf ? "self" : "other");
-        wrapper.append(p);
+        wrapper.append(messageBubble);
         messageArea.append(wrapper);
     }
 

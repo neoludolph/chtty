@@ -313,6 +313,9 @@ input::placeholder {
     border-radius: 16px;
     border: 1px solid #ddd;
     background-color: #f3f3f3;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .chat-message.self {
@@ -329,6 +332,16 @@ input::placeholder {
     border: none;
     font-weight: 600;
     color: #555;
+}
+
+.message-text {
+    margin: 0;
+}
+
+.message-timestamp {
+    font-size: 12px;
+    color: #666;
+    align-self: flex-end;
 }
 
 #input-area {
