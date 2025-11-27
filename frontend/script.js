@@ -148,19 +148,25 @@ window.addEventListener("DOMContentLoaded", () => {
                 const eventData = JSON.parse(event.data);
                 if (eventData.type === "join") {
                     const joinedUsername = eventData.username;
-                    appendSystemMessage(messageArea, `${joinedUsername} entered the chat!`);
+                    if (joinedUsername !== currentUsername) {
+                        appendSystemMessage(messageArea, `${joinedUsername} entered the chat!`);
+                    }
                 } else if (eventData.type === "chat_message") {
                     const msgUsername = eventData.username;
                     const msgContent = eventData.chat_message;
                     appendMessage(messageArea, msgUsername, msgContent, eventData.timestamp);
                 } else if (eventData.type === "leave") {
                     const leftUsername = eventData.username;
-                    appendSystemMessage(messageArea, `${leftUsername} left the chat!`);
+                    if (leftUsername !== currentUsername) {
+                        appendSystemMessage(messageArea, `${leftUsername} left the chat!`);
+                    }
                 } else if (eventData.type === "chat_history_type") {
                     const array = eventData.chat_history;
                     array.forEach(element => {
                         if (element.chat_message === "entered the chat!" || element.chat_message === "left the chat!") {
-                            appendSystemMessage(messageArea, `${element.username} ${element.chat_message}`);
+                            if (element.username !== currentUsername) {
+                                appendSystemMessage(messageArea, `${element.username} ${element.chat_message}`);
+                            }
                         } else {
                             appendMessage(messageArea, element.username, element.chat_message, element.timestamp);
                         }
