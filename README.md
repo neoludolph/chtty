@@ -111,6 +111,8 @@ Requirements:
 
 [Node.js](https://nodejs.org/en/download)
 
+[nvm](https://github.com/nvm-sh/nvm)
+
 1. Navigate to frontend folder:
 
 ```bash
