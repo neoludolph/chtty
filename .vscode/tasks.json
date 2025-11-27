@@ -66,22 +66,24 @@
       "options": {
         "cwd": "${workspaceFolder}"
       },
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
       "problemMatcher": [],
       "detail": "vite über nvm"
     },
     {
       "label": "Run Full Stack",
       "type": "shell",
-      "command": "bash",
+      "command": "echo",
       "args": [
-        "-lc",
-        "cd ${workspaceFolder}/frontend && source ${NVM_DIR:-$HOME/.nvm}/nvm.sh && nvm use && npm run dev"
+        "Full Stack started"
       ],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
       "dependsOn": [
-        "Run FastAPI"
+        "Run FastAPI",
+        "Run Frontend"
       ],
       "dependsOrder": "parallel",
       "group": {
@@ -90,7 +92,7 @@
       },
       "presentation": {
         "reveal": "always",
-        "panel": "dedicated"
+        "panel": "shared"
       },
       "problemMatcher": []
     }
