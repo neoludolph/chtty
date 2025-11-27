@@ -145,11 +145,11 @@ button:hover {
     width: 100%;
     min-height: 24px;
     margin-top: 10px;
-    color: #b31111;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 15px;
     font-weight: 700;
     text-align: center;
+    color: #333;
 }
 
 .form-message:empty {
@@ -158,6 +158,14 @@ button:hover {
 
 .form-message p {
     margin: 0;
+}
+
+.form-message.success {
+    color: #1d7d2a;
+}
+
+.form-message.error {
+    color: #b31111;
 }
 
 input::placeholder {

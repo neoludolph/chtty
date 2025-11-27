@@ -66,6 +66,15 @@ window.addEventListener("DOMContentLoaded", () => {
         sessionStorage.removeItem('chatSession');
     }
 
+    function updateFormMessage(elementId, message, type = "error") {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+        element.textContent = message || "";
+        element.classList.remove("success", "error");
+        if (!message) return;
+        element.classList.add(type === "success" ? "success" : "error");
+    }
+
     function renderActiveUsers() {
         if (!activeUserList) return;
         activeUserList.textContent = activeUsers.length ? activeUsers.join(", ") : "Keine Nutzer";
@@ -242,13 +251,8 @@ window.addEventListener("DOMContentLoaded", () => {
     createButton.addEventListener("click", (event) => {
         event.preventDefault();
 
-        const MessageDiv = document.getElementById("create-message");
-        const p = document.createElement("p");
-
         if (roomNameCreate.value === "" || passwordCreate.value === "") {
-            p.textContent = "Please fill in all fields!";
-            MessageDiv.textContent = "";
-            MessageDiv.append(p); 
+            updateFormMessage("create-message", "Please fill in all fields!", "error");
             return;
         }
 
@@ -264,9 +268,13 @@ window.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => response.json())
         .then(data => {
-            document.getElementById("create-message").textContent = data.response_message;
+            const responseText = data.response_message || "Unknown response.";
+            const type = responseText.toLowerCase().includes("success") ? "success" : "error";
+            updateFormMessage("create-message", responseText, type);
         })
-        .catch(error => console.error('Error: ', error));
+        .catch(() => {
+            updateFormMessage("create-message", "Something went wrong. Please try again.", "error");
+        });
 
         roomNameCreate.value = "";
         passwordCreate.value = "";
@@ -288,9 +296,13 @@ window.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => response.json())
         .then(data => {
-            document.getElementById("delete-message").textContent = data.response_message;
+            const responseText = data.response_message || "Unknown response.";
+            const type = responseText.toLowerCase().includes("success") ? "success" : "error";
+            updateFormMessage("delete-message", responseText, type);
         })
-        .catch(error => console.error('Error: ', error));
+        .catch(() => {
+            updateFormMessage("delete-message", "Something went wrong. Please try again.", "error");
+        });
 
         roomNameDelete.value = "";
         passwordDelete.value = "";
@@ -300,13 +312,8 @@ window.addEventListener("DOMContentLoaded", () => {
     connectButton.addEventListener("click", (event) => {
         event.preventDefault();
 
-        const errorMessageDiv = document.getElementById("error-message");
-        const p = document.createElement("p");
-
         if (roomNameJoin.value === "" || passwordJoin.value === "" || usernameJoin.value === "") {
-            p.textContent = "Please fill in all fields!";
-            errorMessageDiv.textContent = "";
-            errorMessageDiv.append(p); 
+            updateFormMessage("error-message", "Please fill in all fields!", "error");
             return;
         }
 
@@ -329,16 +336,18 @@ window.addEventListener("DOMContentLoaded", () => {
             };
 
             if (checkResult.bool === false) {
-                p.textContent = checkResult.errorMessage;
-                errorMessageDiv.textContent = "";
-                errorMessageDiv.append(p); 
+                updateFormMessage("error-message", checkResult.errorMessage || "Something went wrong.", "error");
                 return;
             }
+
+            updateFormMessage("error-message", "");
 
             // Save session before connecting
             saveSession(roomNameJoin.value, passwordJoin.value, usernameJoin.value);
             connectToRoom(roomNameJoin.value, passwordJoin.value, usernameJoin.value);
         })
-        .catch(error => console.error('Error: ', error));
+        .catch(() => {
+            updateFormMessage("error-message", "Could not connect. Please try again.", "error");
+        });
     });
 });
