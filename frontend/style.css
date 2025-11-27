@@ -171,9 +171,33 @@ button:hover {
     color: #b31111;
 }
 
-input::placeholder {
+/* Ensure user input text uses the same font and letter spacing as placeholders */
+input,
+textarea,
+select,
+.menu-container input,
+#input-area input,
+.contact-form input,
+.contact-form textarea {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     letter-spacing: 0.5px;
+    font-weight: 400;
+}
+
+/* Placeholder styling (include vendor prefixes for broad browser support) */
+input::placeholder,
+textarea::placeholder,
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder,
+input::-moz-placeholder,
+textarea::-moz-placeholder,
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder,
+input::-ms-input-placeholder,
+textarea::-ms-input-placeholder {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    letter-spacing: 0.5px;
+    font-weight: 400;
 }
 
 #message {
