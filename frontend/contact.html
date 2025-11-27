@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact | Chtty</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <a href="index.html">Back</a>
+      <a href="https://github.com/neoludolph" target="_blank" rel="noopener noreferrer" id="github-mark">
+        <img src="images/github-mark.svg" alt="GitHub Icon" width="32" height="32" />
+      </a>
+    </header>
+    <main class="contact-container">
+      <form
+        class="contact-form"
+        action="mailto:neoludolph@gmail.com"
+        method="post"
+        enctype="text/plain"
+      >
+        <h2>Contact Form</h2>
+        <label for="contact-name">Name</label>
+        <input type="text" id="contact-name" name="Name" placeholder="Your name" required />
+
+        <label for="contact-email">Email</label>
+        <input type="email" id="contact-email" name="Email" placeholder="your@mail.com" required />
+
+        <label for="contact-message">Message</label>
+        <textarea id="contact-message" name="Message" placeholder="How can we help?" required></textarea>
+
+        <button type="submit">Send message</button>
+      </form>
+    </main>
+  </body>
+</html>
