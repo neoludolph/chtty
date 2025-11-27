@@ -4,12 +4,15 @@
     {
       "label": "Install Python Dependencies",
       "type": "shell",
-      "command": "pip",
+      "command": "${workspaceFolder}/.venv/bin/pip",
       "args": [
         "install",
         "-r",
-        "backend/requirements.txt"
+        "requirements.txt"
       ],
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      },
       "group": "none",
       "presentation": {
         "reveal": "always",
