@@ -53,19 +53,32 @@
       "problemMatcher": []
     },
     {
-      "type": "npm",
-      "script": "dev",
-      "path": "frontend",
-      "problemMatcher": [],
       "label": "Run Frontend",
-      "detail": "vite"
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "cd ${workspaceFolder}/frontend && source ${NVM_DIR:-$HOME/.nvm}/nvm.sh && nvm use && npm run dev"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "detail": "vite über nvm"
     },
     {
       "label": "Run Full Stack",
       "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "cd ${workspaceFolder}/frontend && source ${NVM_DIR:-$HOME/.nvm}/nvm.sh && nvm use && npm run dev"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "dependsOn": [
-        "Run FastAPI",
-        "Run Frontend"
+        "Run FastAPI"
       ],
       "dependsOrder": "parallel",
       "group": {
