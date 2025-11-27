@@ -59,6 +59,13 @@ app.add_middleware(
 
 rooms = {}
 
+
+def _validate_non_empty(value: str, field_name: str) -> str:
+    """Ensure the incoming string is not empty/blank."""
+    if value is None or not value.strip():
+        raise HTTPException(status_code=422, detail=f"{field_name} cannot be empty.")
+    return value.strip()
+
 async def broadcast_active_users(roomname: str):
     active_users = get_users_in_room(roomname)
     payload = {
@@ -124,37 +131,48 @@ async def chat(websocket: WebSocket):
 
 @app.post("/get_checks", response_model=CheckResult)
 async def get_checks(room_data: LoginData):
-    check_room = check_if_db_room_exists(room_data.roomname)
-    check_password = check_if_password_is_correct(room_data.roomname, room_data.password)
-    check_user = check_if_user_exists_in_db(room_data.username)
-    if (check_room is True and check_password is True):
-        if (check_user):
-            username_already_taken = "Your entered username is already taken by someone else!"
-            response = CheckResult(result=False, error_message=username_already_taken)
-            return response
-        else:
-            response = CheckResult(result=True)
-            return response
-    elif (check_room is True and check_password is False):
-        wrong_password = "The entered password is wrong!"
-        response = CheckResult(result=False, error_message=wrong_password)
-        return response
-    else:
-        no_room = "Room does not exist!"
-        response = CheckResult(result=False, error_message=no_room)
-        return response
+    username = _validate_non_empty(room_data.username, "Username")
+    roomname = _validate_non_empty(room_data.roomname, "Room name")
+    password = _validate_non_empty(room_data.password, "Password")
+
+    if not check_if_db_room_exists(roomname):
+        raise HTTPException(status_code=404, detail="Room does not exist!")
+
+    if not check_if_password_is_correct(roomname, password):
+        raise HTTPException(status_code=401, detail="The entered password is wrong!")
+
+    if check_if_user_exists_in_db(username):
+        raise HTTPException(
+            status_code=409,
+            detail="Your entered username is already taken by someone else!",
+        )
+
+    return CheckResult(result=True)
 
 @app.post("/create-room", response_model=RoomDataResponse)
 async def create_room_(room_data: RoomData):
-    if (check_if_db_room_exists(room_data.roomname)):
+    roomname = _validate_non_empty(room_data.roomname, "Room name")
+    password = _validate_non_empty(room_data.password, "Password")
+
+    if check_if_db_room_exists(roomname):
         raise HTTPException(status_code=400, detail="Room already exists!")
-    rooms[room_data.roomname] = set()
-    result = create_db_room(room_data.roomname, room_data.password)
+
+    rooms[roomname] = set()
+    result = create_db_room(roomname, password)
     return result
 
 @app.delete("/delete-room", response_model=RoomDataResponse)
 async def delete_db_room_(room_data: RoomData):
-    result = delete_db_room(room_data.roomname, room_data.password)
+    roomname = _validate_non_empty(room_data.roomname, "Room name")
+    password = _validate_non_empty(room_data.password, "Password")
+
+    if not check_if_db_room_exists(roomname):
+        raise HTTPException(status_code=404, detail="Room does not exist!")
+
+    if not check_if_password_is_correct(roomname, password):
+        raise HTTPException(status_code=401, detail="The entered password is wrong!")
+
+    result = delete_db_room(roomname, password)
     return result
 
 @app.delete("/delete_rooms_table_content")
@@ -179,5 +197,7 @@ async def delete_all_tables_content_():
 
 @app.delete("/delete_db")
 async def delete_db_():
+    if not db_path.exists():
+        raise HTTPException(status_code=404, detail="Database does not exist!")
     result = delete_db(db_path)
     return result
