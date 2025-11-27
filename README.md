@@ -1,6 +1,6 @@
 # chtty
 
-Chatroom application with login-protected rooms, built with FastAPI (backend) and a small vanilla JS frontend.
+Chatroom-Anwendung mit passwortgeschützten Räumen – Backend in FastAPI, Frontend in Vanilla JavaScript.
 
 ---
 
@@ -27,20 +27,20 @@ npm run dev
 
 ---
 
-## Backend setup for devs
+## Backend-Setup für Entwickler
 
-### Recommended tooling
+### Empfohlene Basiswerkzeuge
 
 ```bash
-git config --global user.name "Your Name"
-git config --global user.email "your.email@example.com"
+git config --global user.name "Dein Name"
+git config --global user.email "deine.mail@example.com"
 sudo apt update
 sudo apt install -y build-essential procps curl file git
 sudo apt install -y make libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
     libsqlite3-dev libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 ```
 
-### Python environment (venv)
+### Python-Umgebung (venv)
 
 ```bash
 cd ~/projects/chtty/backend
@@ -50,26 +50,26 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Deactivate with `deactivate` once you finish hacking.
+Mit `deactivate` verlässt du die virtuelle Umgebung wieder.
 
 ---
 
-## Frontend setup for devs
+## Frontend-Setup für Entwickler:innen
 
-- Install [Node.js](https://nodejs.org/en/download) (or use [nvm](https://github.com/nvm-sh/nvm)).
-- From `frontend/`, run `npm install`.
-- Start the local dev server via `npm run dev`.
+- Installiere [Node.js](https://nodejs.org/en/download) oder nutze [nvm](https://github.com/nvm-sh/nvm).
+- Führe im Ordner `frontend/` den Befehl `npm install` aus.
+- Starte den lokalen Dev-Server mit `npm run dev`.
 
 ---
 
-## Docker installation
+## Docker-Installation
 
-Official docs:
+Offizielle Dokumentation:
 
-- [Docker for Linux Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
-- [Docker for macOS](https://docs.docker.com/desktop/setup/install/mac-install/)
+- [Docker für Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+- [Docker für macOS](https://docs.docker.com/desktop/setup/install/mac-install/)
 
-Summary for Ubuntu:
+Zusammenfassung für Ubuntu:
 
 ```bash
 sudo apt remove -y docker.io docker-engine docker-compose docker-compose-v2 podman-docker containerd runc || true
@@ -81,15 +81,15 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
   https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt update
 sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-sudo usermod -aG docker $USER && exec "$SHELL"
-wsl --shutdown   # PowerShell, only if using WSL
+sudo usermod -aG docker $USER && exec \"$SHELL\"
+wsl --shutdown   # PowerShell, nur falls WSL genutzt wird
 docker --version
 docker run hello-world
 ```
 
 ---
 
-## Build and use Docker containers
+## Docker-Container bauen und nutzen
 
 ```bash
 docker compose up --build -d
