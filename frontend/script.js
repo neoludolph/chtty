@@ -39,6 +39,16 @@ window.addEventListener("DOMContentLoaded", () => {
         messageArea.append(wrapper);
     }
 
+    function appendSystemMessage(messageArea, text) {
+        const p = document.createElement("p");
+        p.textContent = text;
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("message-row", "system");
+        p.classList.add("system-message");
+        wrapper.append(p);
+        messageArea.append(wrapper);
+    }
+
     function saveSession(roomname, password, username) {
         sessionStorage.setItem('chatSession', JSON.stringify({
             roomname,
@@ -128,31 +138,23 @@ window.addEventListener("DOMContentLoaded", () => {
             ws.onmessage = (event) => {
                 const eventData = JSON.parse(event.data);
                 if (eventData.type === "join") {
-                    const p = document.createElement("p");
                     const joinedUsername = eventData.username;
-                    p.textContent = `${joinedUsername} entered the chat!`;
-                    const wrapper = document.createElement("div");
-                    wrapper.classList.add("message-row", "system");
-                    p.classList.add("system-message");
-                    wrapper.append(p);
-                    messageArea.append(wrapper);
+                    appendSystemMessage(messageArea, `${joinedUsername} entered the chat!`);
                 } else if (eventData.type === "chat_message") {
                     const msgUsername = eventData.username;
                     const msgContent = eventData.chat_message;
                     appendMessage(messageArea, msgUsername, msgContent, eventData.timestamp);
                 } else if (eventData.type === "leave") {
-                    const p = document.createElement("p");
                     const leftUsername = eventData.username;
-                    p.textContent = `${leftUsername} left the chat!`;
-                    const wrapper = document.createElement("div");
-                    wrapper.classList.add("message-row", "system");
-                    p.classList.add("system-message");
-                    wrapper.append(p);
-                    messageArea.append(wrapper);
+                    appendSystemMessage(messageArea, `${leftUsername} left the chat!`);
                 } else if (eventData.type === "chat_history_type") {
                     const array = eventData.chat_history;
                     array.forEach(element => {
-                        appendMessage(messageArea, element.username, element.chat_message, element.timestamp);
+                        if (element.chat_message === "entered the chat!" || element.chat_message === "left the chat!") {
+                            appendSystemMessage(messageArea, `${element.username} ${element.chat_message}`);
+                        } else {
+                            appendMessage(messageArea, element.username, element.chat_message, element.timestamp);
+                        }
                     });
                 } else if (eventData.type === "active_users") {
                     activeUsers = eventData.users || [];

@@ -89,6 +89,7 @@ async def chat(websocket: WebSocket):
                 "type": "chat_history_type",
                 "chat_history": chat_history
             })
+            save_message_in_db(join_data_pydantic.roomname, "entered the chat!", join_data_pydantic.username)
             for client in rooms[join_data_pydantic.roomname]:
                 if (client is websocket):
                     continue
@@ -108,6 +109,7 @@ async def chat(websocket: WebSocket):
                     save_message_in_db(join_data_pydantic.roomname, received_message_parsed.chat_message, received_message_parsed.username)
             except WebSocketDisconnect:
                 rooms[join_data_pydantic.roomname].discard(websocket)
+                save_message_in_db(join_data_pydantic.roomname, "left the chat!", join_data_pydantic.username)
                 delete_user_from_db(join_data_pydantic.username)
                 for client in rooms[join_data_pydantic.roomname]:
                     if (client is websocket):
