@@ -192,6 +192,18 @@ window.addEventListener("DOMContentLoaded", () => {
         showMenu();
     });
 
+    function handleJsonResponse(response) {
+        if (response.ok) {
+            return response.json();
+        }
+        return response.json()
+            .catch(() => ({}))
+            .then(data => {
+                const message = data?.detail || data?.response_message || "Something went wrong.";
+                throw new Error(message);
+            });
+    }
+
     // Check for existing session on page load
     const existingSession = getSession();
     if (existingSession) {
@@ -207,7 +219,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 password: existingSession.password,
             })
         })
-        .then(response => response.json())
+        .then(handleJsonResponse)
         .then(data => {
             if (data.result === true || data.error_message === "Your entered username is already taken by someone else!") {
                 // Session valid, reconnect
@@ -218,7 +230,8 @@ window.addEventListener("DOMContentLoaded", () => {
                 showMenu();
             }
         })
-        .catch(() => {
+        .catch((error) => {
+            updateFormMessage("error-message", error.message, "error");
             clearSession();
             showMenu();
         });
@@ -266,14 +279,14 @@ window.addEventListener("DOMContentLoaded", () => {
                 password: passwordCreate.value,
             })
         })
-        .then(response => response.json())
+        .then(handleJsonResponse)
         .then(data => {
             const responseText = data.response_message || "Unknown response.";
             const type = responseText.toLowerCase().includes("success") ? "success" : "error";
             updateFormMessage("create-message", responseText, type);
         })
-        .catch(() => {
-            updateFormMessage("create-message", "Something went wrong. Please try again.", "error");
+        .catch((error) => {
+            updateFormMessage("create-message", error.message || "Something went wrong. Please try again.", "error");
         });
 
         roomNameCreate.value = "";
@@ -294,14 +307,14 @@ window.addEventListener("DOMContentLoaded", () => {
                 password: passwordDelete.value,
             })
         })
-        .then(response => response.json())
+        .then(handleJsonResponse)
         .then(data => {
             const responseText = data.response_message || "Unknown response.";
             const type = responseText.toLowerCase().includes("success") ? "success" : "error";
             updateFormMessage("delete-message", responseText, type);
         })
-        .catch(() => {
-            updateFormMessage("delete-message", "Something went wrong. Please try again.", "error");
+        .catch((error) => {
+            updateFormMessage("delete-message", error.message || "Something went wrong. Please try again.", "error");
         });
 
         roomNameDelete.value = "";
@@ -328,7 +341,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 password: passwordJoin.value,
             })
         })
-        .then(response => response.json())
+        .then(handleJsonResponse)
         .then(data => {
             const checkResult = {
                 bool: data.result,
@@ -346,8 +359,8 @@ window.addEventListener("DOMContentLoaded", () => {
             saveSession(roomNameJoin.value, passwordJoin.value, usernameJoin.value);
             connectToRoom(roomNameJoin.value, passwordJoin.value, usernameJoin.value);
         })
-        .catch(() => {
-            updateFormMessage("error-message", "Could not connect. Please try again.", "error");
+        .catch((error) => {
+            updateFormMessage("error-message", error.message || "Could not connect. Please try again.", "error");
         });
     });
 });
