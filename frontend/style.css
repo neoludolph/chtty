@@ -108,6 +108,7 @@ button:hover {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background-color: white;
 }
 
 .join-form {
@@ -120,6 +121,7 @@ button:hover {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background-color: white;
 }
 
 .delete-form {
@@ -131,6 +133,7 @@ button:hover {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background-color: white;
 }
 
 .create-form button,
@@ -351,8 +354,8 @@ input::placeholder {
     min-height: calc(100vh - 85px);
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 40px 20px;
+    align-items: flex-start;
+    padding: 100px 20px 40px;
 }
 
 .contact-form {
