@@ -161,3 +161,9 @@ def get_messages_from_db(roomname):
         get_messages = sqla.select(messages.c.chat_message, messages.c.username, messages.c.timestamp).where(messages.c.roomname == roomname).order_by(messages.c.timestamp)
         result = connect.execute(get_messages).fetchall()
     return result
+
+def get_users_in_room(roomname):
+    with engine.begin() as connect:
+        query = sqla.select(users.c.username).where(users.c.roomname == roomname).order_by(users.c.username)
+        result = connect.execute(query).fetchall()
+    return [row[0] for row in result]

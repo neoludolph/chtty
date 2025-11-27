@@ -28,7 +28,8 @@ from backend.database.database import (
     save_user_in_db,
     delete_user_from_db,
     check_if_user_exists_in_db,
-    get_messages_from_db
+    get_messages_from_db,
+    get_users_in_room
 )
 import json
 from typing import Set
@@ -58,6 +59,15 @@ app.add_middleware(
 
 rooms = {}
 
+async def broadcast_active_users(roomname: str):
+    active_users = get_users_in_room(roomname)
+    payload = {
+        "type": "active_users",
+        "users": active_users
+    }
+    for client in rooms.get(roomname, set()):
+        await client.send_json(payload)
+
 @app.websocket("/ws")
 async def chat(websocket: WebSocket):
     await websocket.accept()
@@ -86,6 +96,7 @@ async def chat(websocket: WebSocket):
                     "type": "join",
                     "username": join_data_pydantic.username
                 })
+            await broadcast_active_users(join_data_pydantic.roomname)
             try:
                 while True:
                     received_message = await websocket.receive_text()
@@ -105,6 +116,7 @@ async def chat(websocket: WebSocket):
                         "type": "leave",
                         "username": join_data_pydantic.username
                     })
+                await broadcast_active_users(join_data_pydantic.roomname)
             if not rooms[join_data_pydantic.roomname]:
                 del rooms[join_data_pydantic.roomname]
 

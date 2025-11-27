@@ -5,6 +5,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const chatHeader = document.getElementById("chat-header");
     const backButton = document.getElementById("back-button");
     const roomTitle = document.getElementById("room-title");
+    const activeUserList = document.getElementById("active-user-list");
 
     const roomNameCreate = document.getElementById("room-name-create");
     const roomNameJoin = document.getElementById("room-name-join");
@@ -22,6 +23,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     let currentWebSocket = null;
     let currentUsername = null;
+    let activeUsers = [];
 
     function appendMessage(messageArea, username, chatMessage, timestamp) {
         const date = timestamp ? new Date(timestamp) : new Date();
@@ -54,10 +56,17 @@ window.addEventListener("DOMContentLoaded", () => {
         sessionStorage.removeItem('chatSession');
     }
 
+    function renderActiveUsers() {
+        if (!activeUserList) return;
+        activeUserList.textContent = activeUsers.length ? activeUsers.join(", ") : "Keine Nutzer";
+    }
+
     function showMenu() {
         menuContainer.style.display = "flex";
         chatHeader.style.display = "none";
         currentUsername = null;
+        activeUsers = [];
+        renderActiveUsers();
         document.getElementById("message-area").innerHTML = "";
         document.getElementById("input-area").innerHTML = "";
     }
@@ -145,6 +154,9 @@ window.addEventListener("DOMContentLoaded", () => {
                     array.forEach(element => {
                         appendMessage(messageArea, element.username, element.chat_message, element.timestamp);
                     });
+                } else if (eventData.type === "active_users") {
+                    activeUsers = eventData.users || [];
+                    renderActiveUsers();
                 }
             };
 

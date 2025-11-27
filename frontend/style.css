@@ -192,6 +192,13 @@ input::placeholder {
     border-bottom: 1px solid #ccc;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.chat-header-left {
+    display: flex;
+    align-items: center;
     gap: 20px;
 }
 
@@ -211,6 +218,27 @@ input::placeholder {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 18px;
     font-weight: 600;
+}
+
+#active-users {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.active-users-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+}
+
+#active-user-list {
+    font-size: 14px;
+    color: #333;
+    min-height: 18px;
+    text-align: right;
 }
 
 #message-area {
