@@ -1,4 +1,8 @@
+# Installiert FastAPI mit Standardabhängigkeiten in Version 0.118.0
 fastapi[standard]==0.118.0
+# Installiert Pydantic für Datenvalidierung in Version 2.11.9
 pydantic==2.11.9
+# Installiert SQLAlchemy für Datenbankoperationen in Version 2.0.44
 SQLAlchemy==2.0.44
+# Installiert bcrypt für Passwort-Hashing in Version 4.2.0
 bcrypt==4.2.0

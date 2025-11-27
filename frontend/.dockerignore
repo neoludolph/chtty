@@ -1,2 +1,4 @@
+# Ignoriert den Ordner für Node.js-Abhängigkeiten
 node_modules/
+# Ignoriert den Ordner für virtuelle Python-Umgebungen
 .venv/

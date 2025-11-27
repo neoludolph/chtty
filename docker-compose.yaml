@@ -1,13 +1,26 @@
+# Definiert die Dienste für die Anwendung
 services:
+  # Definiert den Backend-Dienst
   backend:
+    # Konfiguriert den Build-Prozess für das Backend
     build:
+      # Setzt das Build-Kontext-Verzeichnis auf backend/
       context: backend/
+      # Gibt die zu verwendende Dockerfile an
       dockerfile: Dockerfile
+    # Konfiguriert die Port-Weiterleitung
     ports:
+      # Leitet Port 8001 des Hosts auf Port 8000 des Containers weiter
       - "8001:8000"
+  # Definiert den Frontend-Dienst
   frontend:
+    # Konfiguriert den Build-Prozess für das Frontend
     build:
+      # Setzt das Build-Kontext-Verzeichnis auf frontend/
       context: frontend/
+      # Gibt die zu verwendende Dockerfile an
       dockerfile: Dockerfile
+    # Konfiguriert die Port-Weiterleitung
     ports:
+      # Leitet Port 5174 des Hosts auf Port 5173 des Containers weiter
       - "5174:5173"

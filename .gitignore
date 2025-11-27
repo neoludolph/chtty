@@ -1,28 +1,33 @@
-# Virtual Environments (die eigentlichen Umgebungen)
+# Ignoriert den Ordner für virtuelle Umgebungen (venv)
 venv/
+# Ignoriert den Ordner für virtuelle Umgebungen (env)
 env/
+# Ignoriert den Ordner für virtuelle Umgebungen (.venv)
 .venv/
+# Ignoriert den Ordner für virtuelle Umgebungen (.env)
 .env/
 
-# pyenv
+# Ignoriert Backup-Dateien der Python-Version
 .python-version.bak
 
-# Dependencies
+# Ignoriert den Cache-Ordner von Python
 __pycache__/
+# Ignoriert kompilierte Python-Dateien
 *.pyc
 
-# IDE
+# Ignoriert den Konfigurationsordner von JetBrains IDEs
 .idea/
 
-# Environment Variables
+# Ignoriert die Datei für Umgebungsvariablen
 .env
+# Ignoriert die lokale Datei für Umgebungsvariablen
 .env.local
 
-# Frontend 
+# Ignoriert den Ordner für Node.js-Abhängigkeiten
 node_modules/
 
-# Database
+# Ignoriert die SQLite-Datenbankdatei
 backend/database/database.db
 
-# Mac
+# Ignoriert die Systemdatei von macOS
 .DS_Store

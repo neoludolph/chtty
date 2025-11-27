@@ -1,7 +1,9 @@
+/* Setzt das Box-Modell für alle Elemente auf border-box */
 * {
     box-sizing: border-box;
 }
 
+/* Stylt den Header-Bereich */
 header {
     height: 85px;
     box-shadow: 4px 4px 9px 1px rgba(0, 0, 0, 0.23);
@@ -11,6 +13,7 @@ header {
     background-color: whitesmoke;
 }
 
+/* Stylt Links im Header */
 header a {
     margin-right: 20px;
     margin-left: 20px;
@@ -29,16 +32,19 @@ header a {
     transition: all 0.1s ease;
 }
 
+/* Stylt den Hover-Zustand von Header-Links */
 header a:hover {
     background-color: rgb(85, 85, 85);
     border: 1px solid black;
 }
 
+/* Stylt den Body */
 body {
     margin: 0;
     background-color: whitesmoke;
 }
 
+/* Stylt h2-Überschriften */
 h2 {
     margin-top: 3px;
     padding-left: 7px;
@@ -54,12 +60,14 @@ h2 {
     align-items: center;
 }
 
+/* Stylt h4-Überschriften */
 h4 {
     margin-top: 1px;
     margin: 4px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+/* Stylt Buttons */
 button {
     padding: 5px;
     padding-left: 10px;
@@ -75,10 +83,12 @@ button {
     cursor: pointer;
 }
 
+/* Stylt den Hover-Zustand von Buttons */
 button:hover {
     filter: drop-shadow(0 0 8px rgb(61, 61, 61));
 }
 
+/* Stylt den Menü-Container */
 .menu-container {
     margin-top: 100px;
     display: flex;
@@ -88,6 +98,7 @@ button:hover {
     gap: 12px;
 }
 
+/* Stylt Eingabefelder im Menü-Container */
 .menu-container input {
     margin: 10px;
     border: 1px solid black;
@@ -99,6 +110,7 @@ button:hover {
     align-items: center;
 }
 
+/* Stylt das Erstellen-Formular */
 .create-form {
     margin-right: 30px;
     padding: 20px;
@@ -111,6 +123,7 @@ button:hover {
     background-color: white;
 }
 
+/* Stylt das Beitreten-Formular */
 .join-form {
     padding: 20px;
     margin-left: 30px;
@@ -124,6 +137,7 @@ button:hover {
     background-color: white;
 }
 
+/* Stylt das Löschen-Formular */
 .delete-form {
     padding: 20px;
     margin-left: 30px;
@@ -136,6 +150,7 @@ button:hover {
     background-color: white;
 }
 
+/* Stylt Buttons in Formularen */
 .create-form button,
 .join-form button,
 .delete-form button {
@@ -144,6 +159,7 @@ button:hover {
     align-self: center;
 }
 
+/* Stylt Formularnachrichten */
 .form-message {
     width: 100%;
     min-height: 24px;
@@ -155,23 +171,27 @@ button:hover {
     color: #333;
 }
 
+/* Versteckt leere Formularnachrichten */
 .form-message:empty {
     display: none;
 }
 
+/* Stylt Absätze in Formularnachrichten */
 .form-message p {
     margin: 0;
 }
 
+/* Stylt Erfolgsnachrichten */
 .form-message.success {
     color: #1d7d2a;
 }
 
+/* Stylt Fehlernachrichten */
 .form-message.error {
     color: #b31111;
 }
 
-/* Ensure user input text uses the same font and letter spacing as placeholders */
+/* Stellt sicher, dass Benutzereingaben die gleiche Schriftart verwenden */
 input,
 textarea,
 select,
@@ -184,7 +204,7 @@ select,
     font-weight: 400;
 }
 
-/* Placeholder styling (include vendor prefixes for broad browser support) */
+/* Stylt Platzhaltertexte */
 input::placeholder,
 textarea::placeholder,
 input::-webkit-input-placeholder,
@@ -200,6 +220,7 @@ textarea::-ms-input-placeholder {
     font-weight: 400;
 }
 
+/* Stylt den Nachrichtenbereich */
 #message {
     margin-top: 20px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -210,10 +231,12 @@ textarea::-ms-input-placeholder {
     align-self: center;
 }
 
+/* Versteckt leere Nachrichtenbereiche */
 #message:empty {
     display: none;
 }
 
+/* Stylt die Raum-ID */
 #room-id {
     margin-top: 20px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -224,11 +247,13 @@ textarea::-ms-input-placeholder {
     align-self: center;
 }
 
+/* Stylt das GitHub-Logo */
 #github-mark {
     background-color: whitesmoke;
     border: unset;
 }
 
+/* Stylt den Chat-Container */
 #chat-container {
     height: calc(100vh - 85px);
 
@@ -239,6 +264,7 @@ textarea::-ms-input-placeholder {
     align-items: center;
 }
 
+/* Stylt den Chat-Header */
 #chat-header {
     width: 100%;
     padding: 15px 20px;
@@ -250,12 +276,14 @@ textarea::-ms-input-placeholder {
     gap: 20px;
 }
 
+/* Stylt den linken Teil des Chat-Headers */
 .chat-header-left {
     display: flex;
     align-items: center;
     gap: 20px;
 }
 
+/* Stylt den Zurück-Button im Chat-Header */
 #chat-header #back-button {
     padding: 8px 16px;
     background-color: rgb(240, 240, 240);
@@ -263,10 +291,12 @@ textarea::-ms-input-placeholder {
     border: 1px solid #999;
 }
 
+/* Stylt den Hover-Zustand des Zurück-Buttons */
 #chat-header #back-button:hover {
     background-color: rgb(225, 225, 225);
 }
 
+/* Stylt den Raumtitel */
 #room-title {
     color: #222;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -274,6 +304,7 @@ textarea::-ms-input-placeholder {
     font-weight: 600;
 }
 
+/* Stylt den Bereich für aktive Benutzer */
 #active-users {
     display: flex;
     flex-direction: column;
@@ -282,12 +313,14 @@ textarea::-ms-input-placeholder {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+/* Stylt das Label für aktive Benutzer */
 .active-users-label {
     font-size: 14px;
     font-weight: 600;
     color: #555;
 }
 
+/* Stylt die Liste der aktiven Benutzer */
 #active-user-list {
     font-size: 14px;
     color: #333;
@@ -295,6 +328,7 @@ textarea::-ms-input-placeholder {
     text-align: right;
 }
 
+/* Stylt den Nachrichtenbereich */
 #message-area {
     flex-grow: 1;
     overflow-y: auto;
@@ -306,6 +340,7 @@ textarea::-ms-input-placeholder {
     gap: 10px;
 }
 
+/* Stylt Absätze im Nachrichtenbereich */
 #message-area p {
     margin: 0;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -313,24 +348,29 @@ textarea::-ms-input-placeholder {
     font-weight: 600;
 }
 
+/* Stylt Nachrichtenreihen */
 .message-row {
     width: min(600px, 80%);
     display: flex;
     margin: 0 auto;
 }
 
+/* Stylt eigene Nachrichtenreihen */
 .message-row.self {
     justify-content: flex-end;
 }
 
+/* Stylt fremde Nachrichtenreihen */
 .message-row.other {
     justify-content: flex-start;
 }
 
+/* Stylt Systemnachrichtenreihen */
 .message-row.system {
     justify-content: center;
 }
 
+/* Stylt Chat-Nachrichten */
 .chat-message {
     max-width: 100%;
     padding: 10px 14px;
@@ -342,15 +382,18 @@ textarea::-ms-input-placeholder {
     gap: 4px;
 }
 
+/* Stylt eigene Chat-Nachrichten */
 .chat-message.self {
     background-color: #dceefc;
     border-color: #b5d4f4;
 }
 
+/* Stylt fremde Chat-Nachrichten */
 .chat-message.other {
     align-self: flex-start;
 }
 
+/* Stylt Systemnachrichten */
 .system-message {
     background-color: transparent;
     border: none;
@@ -358,16 +401,19 @@ textarea::-ms-input-placeholder {
     color: #555;
 }
 
+/* Stylt Nachrichtentext */
 .message-text {
     margin: 0;
 }
 
+/* Stylt Zeitstempel */
 .message-timestamp {
     font-size: 12px;
     color: #666;
     align-self: flex-end;
 }
 
+/* Stylt den Eingabebereich */
 #input-area {
     padding: 40px;
     width: 100%;
@@ -377,16 +423,19 @@ textarea::-ms-input-placeholder {
     border-top: 1px solid #ccc;
 }
 
+/* Stylt Buttons im Eingabebereich */
 #input-area button {
     margin-left: 10px;
 }
 
+/* Stylt Eingabefelder im Eingabebereich */
 #input-area input {
     border: 1px solid black;
     border-radius: 10px;
     padding-left: 10px;
 }
 
+/* Stylt den Kontakt-Container */
 .contact-container {
     min-height: calc(100vh - 85px);
     display: flex;
@@ -395,6 +444,7 @@ textarea::-ms-input-placeholder {
     padding: 100px 20px 40px;
 }
 
+/* Stylt das Kontaktformular */
 .contact-form {
     width: min(500px, 90%);
     padding: 30px;
@@ -406,10 +456,12 @@ textarea::-ms-input-placeholder {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
+/* Stylt Überschriften im Kontaktformular */
 .contact-form h2 {
     margin-bottom: 20px;
 }
 
+/* Stylt Labels im Kontaktformular */
 .contact-form label {
     margin: 10px 0 4px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -417,6 +469,7 @@ textarea::-ms-input-placeholder {
     font-weight: 650;
 }
 
+/* Stylt Eingabefelder und Textbereiche im Kontaktformular */
 .contact-form input,
 .contact-form textarea {
     margin: 0 0 12px;
@@ -427,11 +480,13 @@ textarea::-ms-input-placeholder {
     font-size: 16px;
 }
 
+/* Stylt Textbereiche im Kontaktformular */
 .contact-form textarea {
     min-height: 140px;
     resize: vertical;
 }
 
+/* Stylt Buttons im Kontaktformular */
 .contact-form button {
     align-self: flex-end;
     margin-top: 10px;
