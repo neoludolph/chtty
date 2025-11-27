@@ -1,6 +1,6 @@
 # chtty
 
-A chatroom app with a login functionality
+Chatroom application with login-protected rooms, built with FastAPI (backend) and a small vanilla JS frontend.
 
 ---
 
@@ -9,121 +9,56 @@ A chatroom app with a login functionality
 ### Backend
 
 ```bash
-pyenv install 3.13.0
-pyenv virtualenv 3.13.0 chtty-env
-cd backend/
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
+pip install --upgrade pip
 pip install -r requirements.txt
-```
-
-#### Start FastAPI
-
-```bash
 uvicorn main:app --reload
 ```
 
 ### Frontend
 
 ```bash
-cd frontend/
+cd frontend
 npm install
 npm run dev
 ```
 
+---
+
 ## Backend setup for devs
 
-### Basic installations
-
-Add Git identity:
+### Recommended tooling
 
 ```bash
 git config --global user.name "Your Name"
 git config --global user.email "your.email@example.com"
-```
-
-Install base tools:
-
-```bash
 sudo apt update
-sudo apt install build-essential procps curl file git -y
+sudo apt install -y build-essential procps curl file git
+sudo apt install -y make libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
+    libsqlite3-dev libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 ```
 
-Important Python dependencies to avoid compiling issues:
-
-```bash
-sudo apt install make build-essential libssl-dev zlib1g-dev \
-libbz2-dev libreadline-dev libsqlite3-dev curl git \
-libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
-```
-
----
-
-### Set up pyenv and pyenv-virtualenv
-
-#### Requirements
-
-- [pyenv](https://github.com/pyenv/pyenv?tab=readme-ov-file#b-set-up-your-shell-environment-for-pyenv)
-- [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv)
-
-For the pyenv installation you have to check your profile:
-
-```bash
-ls -a ~ | grep profile
-```
-
-1. Load Python 3.13.0 in `~/.pyenv/versions/3.13.0`:
-
-```bash
-pyenv install 3.13.0
-```
-
-2. Create virtual environment `chtty-env` in `~/.pyenv/versions with Python 3.13.0`:
-
-```bash
-pyenv virtualenv 3.13.0 chtty-env
-```
-
-Activate
-
-```bash
-pyenv activate chtty-env
-```
-
-3. Navigate to project:
-
-```bash
-cd ~/projects/chtty
-```
-
-4. Install dependencies:
-
-Core dependencies:
+### Python environment (venv)
 
 ```bash
 cd ~/projects/chtty/backend
+python3 -m venv .venv
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
+
+Deactivate with `deactivate` once you finish hacking.
 
 ---
 
 ## Frontend setup for devs
 
-Requirements:
-
-[Node.js](https://nodejs.org/en/download)
-
-[nvm](https://github.com/nvm-sh/nvm)
-
-1. Navigate to frontend folder:
-
-```bash
-cd ~/projects/chtty/frontend
-```
-
-2. Install dependencies:
-
-```bash
-npm install
-```
+- Install [Node.js](https://nodejs.org/en/download) (or use [nvm](https://github.com/nvm-sh/nvm)).
+- From `frontend/`, run `npm install`.
+- Start the local dev server via `npm run dev`.
 
 ---
 
@@ -131,66 +66,23 @@ npm install
 
 Official docs:
 
-[Docker for Linux Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+- [Docker for Linux Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+- [Docker for macOS](https://docs.docker.com/desktop/setup/install/mac-install/)
 
-[Docker for macOS](https://docs.docker.com/desktop/setup/install/mac-install/)
-
-Or follow these steps for Linux:
-
-1. Remove old Docker packages (if any):
+Summary for Ubuntu:
 
 ```bash
 sudo apt remove -y docker.io docker-engine docker-compose docker-compose-v2 podman-docker containerd runc || true
-```
-
-2. Set up prerequisites:
-
-```bash
 sudo apt install -y ca-certificates curl gnupg lsb-release
-```
-
-3. Add Docker’s official GPG key:
-
-```bash
 sudo mkdir -p /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 sudo chmod a+r /etc/apt/keyrings/docker.gpg
-```
-
-4. Add the Docker repository:
-
-```bash
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
-  https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-```
-
-5. Install Docker Engine:
-
-```bash
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+  https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt update
 sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-```
-
-6. Run Docker without `sudo`:
-
-```bash
-sudo usermod -aG docker $USER
-exec "$SHELL"
-```
-
-Powershell:
-
-```powershell
-wsl --shutdown
-```
-
-Restart WSL now!
-
-7. Verify installation:
-
-```bash
+sudo usermod -aG docker $USER && exec "$SHELL"
+wsl --shutdown   # PowerShell, only if using WSL
 docker --version
 docker run hello-world
 ```
